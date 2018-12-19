@@ -1,0 +1,114 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="subject" content="서울장학재단 관리자모드" />
+<meta name="title" content="서울장학재단 관리자모드페이지" />
+<meta name="keywords" content="서울장학재단, 관리자모드" />
+<meta name="date" content="2011-08-11" />
+<title>Lee House</title>
+<link rel="stylesheet" type="text/css" href="./share/css/base.css" />
+<link rel="stylesheet" type="text/css" href="./share/css/admin.css" />
+</head>
+
+
+<script type="text/javascript">
+
+</script>
+
+<body>
+	
+<link rel="stylesheet" type="text/css" href="./dhx/skins/dhtmlxgrid_dhx_skyblue.css">
+<link rel="STYLESHEET" type="text/css" href="./dhx/dhtmlxcombo.css">
+<script  src="./dhx/dhtmlxcommon.js"></script>
+<script  src="./dhx/dhtmlxgrid.js"></script>
+<script  src="./dhx/ext/dhtmlxgrid_srnd.js"></script>
+<script  src="./dhx/ext/dhtmlxgrid_filter.js"></script>    
+<script  src="./dhx/dhtmlxgridcell.js"></script>
+<script  src="./dhx/dhtmlxcombo.js"></script>
+	
+<div id="wrap">
+ 
+ 	
+
+ 	<div id="header">
+ 	
+			 	
+		<div class="top_navi">
+		<!--<h1><a href="../main/main_fd.jsp"><img  src="./images/admin/admin_logo.gif" alt="관리자모드" /></a></h1>-->
+			<p class="gnb"><span><strong>슈퍼관리자</strong>님 로그인</span>
+			<a href="../main/main_fd.jsp">사용자 메인</a>
+			<a href="../common/do_logout.jsp">로그아웃</a></p>
+		</div>
+		<div id="lnb">
+			<ul>
+			
+							
+				<li><a href="../main/main_fd.jsp">관리자메인</a></li>
+							
+				<li><a href="../board/mentoring_notice_list.jsp">파일관리 </a></li>
+			
+				<li><a href="../member/member_list.jsp">회원관리</a></li>
+			
+				<li><a href="../dhx/dhxTest1.jsp">dhx예제</a></li>		
+			</ul>
+		</div>
+	</div>
+
+	<hr />
+	<div id="container">
+		
+
+		<div id="left">
+			<h2>DHX 테스트</h2>
+			<ul>
+				<li><a href="../dhx/dhxTest1.jsp">DHX 테스트</a>
+					<ul>
+						<li><a href="../dhx/dhxTest1.jsp">DHX 테스트예제1</a></li>
+						<li><a href="../dhx/dhxTest2.jsp">DHX 테스트예제2</a></li>
+						<li><a href="../dhx/dhxTest3.jsp">DHX 테스트예제3</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="contents_wrap">
+
+			<div class="location">
+				<h1>DHX테스트</h1>
+				<p><a href="main.jsp">홈</a> &gt; <strong>DHX</strong></p>
+			</div>
+
+			<div class="contents">
+				
+				
+				<div id="gridbox" style="width: 1200px; height: 500px; background-color:white;"></div>
+				
+<script>dhx_globalImgPath = "./dhx/dhtmlxCombo/imgs/";
+mygrid = new dhtmlXGridObject('gridbox');
+mygrid.setImagePath("./dhx/imgs/");
+mygrid.setHeader("날짜,업종,2.0,  법인<br>/면허,자본금,시평,좌수,잔액,2008.0,2009.0,2010.0,2011.0,계,2012.0,양도가,,기타,업체,업체 전화번호");
+//mygrid.attachHeader("&nbsp;,#combo_filter,#combo_filter,&nbsp;,#cspan,#cspan");
+mygrid.attachHeader("&nbsp;,#combo_filter,#combo_filter,&nbsp;,#cspan,#combo_filter");
+mygrid.setInitWidths("150,150,120,150,150,220,150,120,150,150,220,150,120,150,150,220,150,150,220");
+mygrid.enableAutoWidth(true);
+mygrid.setColAlign("left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left,left");
+mygrid.setColTypes("ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed,ed");
+mygrid.setColSorting("str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str,str");
+mygrid.setSkin("dhx_skyblue");
+mygrid.init();
+mygrid.enableSmartRendering(true);
+mygrid.loadXML("./dhx/sample/sample.xml");
+//mygrid.load("./dhx/sample/data.json","json");
+//mygrid.load("./dhx/sample/samle_data.json","json");
+
+</script>
+				
+			</div>
+		</div>
+	</div>
+	<hr />
+</div>
+</body>
+</html>

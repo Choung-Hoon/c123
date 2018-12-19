@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.code">
+
+	<typeAlias alias="Code" type="lee.bean.Code"/>
+	
+	<!-- 등록 -->
+	<insert id="insertCode" parameterClass="Code">
+		INSERT INTO tb_code (
+		  cate_code,
+		  cate_name,
+		  code,
+		  name,
+		  pcode1,
+		  pcode2)
+		VALUES (
+		  #cateCode#,
+		  #cateName#,
+		  #code#,
+		  #name#,
+		  #pcode1#,
+		  #pcode2#)
+	</insert>
+
+	<!--  삭제  -->
+	<update id="deleteCode" parameterClass="Map">
+	<![CDATA[
+		DELETE FROM tb_code
+		WHERE code IN ( $codeList$ )
+	]]>
+	</update>
+
+	<!-- 수정 -->
+	<update id="updateCode" parameterClass="Code">
+	<![CDATA[
+		UPDATE tb_code
+		  SET cate_code = #cateCode#,
+		      cate_name = #cateName#,
+		      code = #code#,
+		  	  name = #name#,
+		  	  pcode1 = #pcode1#,
+		  	  pcode2 = #pcode2#
+		WHERE code = #code#
+	]]>
+	</update>
+
+    <!-- 상세정보 -->
+	<select id="getCode" resultClass="Code" parameterClass="Map">
+		SELECT cate_code as cateCode,
+		       cate_name as cateName,
+		       code,
+		       name,
+		       pcode1,
+		       pcode2
+		 FROM tb_code
+	    WHERE code = #code#
+    </select>
+
+
+
+	<!-- 목록 총개수(페이징) -->
+	<select id="getCodeListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT count(*)
+		  FROM tb_code
+		 WHERE 1=1
+	    <isNotEmpty property="cateCode">
+	      AND cate_code = #cateCode# 
+	    </isNotEmpty>		 
+		<isEqual property="searchType" compareValue="all">
+		  AND ( code like CONCAT('%',#searchValue#,'%') OR name like CONCAT('%',#searchValue#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="code">
+		  AND code like CONCAT('%',#searchValue#,'%') 
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="codeName">
+		  AND name like CONCAT('%',#searchValue#,'%') 
+  		</isEqual>
+  		ORDER BY name ASC
+   	</select>
+
+    <!-- 목록 (페이징) -->
+	<select id="getCodeList" resultClass="Code" parameterClass="Map">
+		SELECT cate_code as cateCode,
+		       cate_name as cateName,
+		       code,
+		       name,
+		       pcode1,
+		       pcode2
+		 FROM tb_code
+	    WHERE 1=1
+	    <isNotEmpty property="cateCode">
+	      AND cate_code = #cateCode# 
+	    </isNotEmpty>
+		<isEqual property="searchType" compareValue="all">
+		  AND ( code like CONCAT('%',#searchValue#,'%') OR name like CONCAT('%',#searchValue#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="code">
+		  AND code like CONCAT('%',#searchValue#,'%') 
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#searchValue#,'%') 
+  		</isEqual>
+  	  ORDER BY name ASC
+	  LIMIT $startPos$,$listSize$
+    </select>
+    
+    <!-- 목록 (페이징) -->
+	<select id="getAllCodeList" resultClass="Code" parameterClass="Map">
+		SELECT cate_code as cateCode,
+		       cate_name as cateName,
+		       code,
+		       name,
+		       pcode1,
+		       pcode2
+		 FROM tb_code
+	    WHERE 1=1
+	    <isNotEmpty property="cateCode">
+	      AND cate_code = #cateCode# 
+	    </isNotEmpty>
+		<isEqual property="searchType" compareValue="all">
+		  AND ( code like CONCAT('%',#searchValue#,'%') OR name like CONCAT('%',#searchValue#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="code">
+		  AND code like CONCAT('%',#searchValue#,'%') 
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#searchValue#,'%') 
+  		</isEqual>
+  	  ORDER BY name ASC
+    </select>    
+		
+</sqlMap>

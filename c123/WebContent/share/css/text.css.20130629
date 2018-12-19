@@ -1,0 +1,99 @@
+a:link{font-size: 9pt;color:#000000;text-decoration:none;}
+a:visited{font-size: 9pt;color:#000000;text-decoration:none;}
+a:active{font-size: 9pt;color:#000000;text-decoration:none;}
+a:hover{font-size: 9pt;color:#0066cc;text-decoration: underline;}
+
+body, table, tr, td, select, input
+{
+	font-family: "±¼¸²,verdana"; 
+	font-size: 9pt; color:#101010;	
+	line-height:150% ;
+	text-decoration:none;
+	scrollbar-arrow-color: #000000;
+	scrollbar-highlight-color: #ffffff;
+	scrollbar-shadow-color: #B4B4B4;
+	scrollbar-darkshadow-color: #EEEEEE;
+	scrollbar-3dlight-color: #EEEEEE;
+	scrollbar-track-color: #FAFAFA;
+	scrollbar-face-color: #EEEEEE;
+}
+
+menu{font-size: 9pt;color:#0099cc;text-decoration: underline;}
+
+.tt1{font-size:12px;FONT-WEIGHT: bold;color:#6aa75e
+}
+.tt2{font-size:12px;FONT-WEIGHT: bold;color:#619da1
+}
+.tt3{font-size:12px;FONT-WEIGHT: bold;color:#9080b6
+}
+.tt4{font-size:12px;FONT-WEIGHT: bold;color:#97949f
+}
+.barcolor_allup {
+	BACKGROUND: #9e74c5
+}
+.barcolor_azone {
+	BACKGROUND: #c47498
+}
+.barcolor_support {
+	BACKGROUND: #33bc0f
+}
+.barcolor_biz {
+	BACKGROUND: #72b6c1
+}
+.barcolor_easy {
+	BACKGROUND: #738fc4
+}
+.barcolor_premium {
+	BACKGROUND: #c5b274
+}
+.tableline1 {
+	BORDER-LEFT: #efeeee 1px solid
+}
+.tableline2 {
+	BORDER-RIGHT: #efeeee 1px solid
+}
+.tableline3 {
+	BORDER-RIGHT: #efeeee 1px solid; BORDER-LEFT: #efeeee 1px solid
+}
+.tborder {
+	BACKGROUND-COLOR: #cccccc
+}
+.tcolor1 {
+	COLOR: #000000; BACKGROUND-COLOR:#F6F2EE
+}
+.tcolor2 {
+	COLOR: #000000; BACKGROUND-COLOR: #FCFAF8
+}
+.tcolor3 {
+	COLOR: #000000; BACKGROUND-COLOR: #ffffff
+}
+.tcolor4 {
+	COLOR: #000000; BACKGROUND-COLOR: #f5eced
+}
+.tcolor5 {
+	COLOR: #000000; BACKGROUND-COLOR: #FAF7F7
+}
+.tcolor6 {
+	COLOR: #000000; BACKGROUND-COLOR: #f3eaf2
+}	
+.tcolor7 {
+	COLOR: #000000; BACKGROUND-COLOR: #f3edf5
+}
+.tcolor8 {
+	COLOR: #000000; BACKGROUND-COLOR: #f9f9f9
+}
+.tcolor9 {
+	COLOR: #000000; BACKGROUND-COLOR: #E6F0E5
+}
+.tcolor10 {
+	COLOR: #000000; BACKGROUND-COLOR: #F5F8F4
+}
+.tcolor20 {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 5px; COLOR: #777777; PADDING-TOP: 5px; BACKGROUND-COLOR: #ffffff; 5px: 
+}
+.tpadding1 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 8px
+}
+.tpadding2 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 2px
+}

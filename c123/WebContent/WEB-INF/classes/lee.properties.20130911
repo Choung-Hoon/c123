@@ -1,0 +1,33 @@
+################################################################################
+# KGC 라이프앤진 위버렉스 설정정보
+################################################################################
+
+# 파일업로드경로
+file.upload=/home/hosting_users/h82214400/www/upload
+
+# 파일업로드임시경로
+file.temp=/home/hosting_users/h82214400/www/temp
+
+# 설정파일기본경로
+config.base=/home/hosting_users/h82214400/www/WEB-INF/classes
+
+# 엑셀 템플릿 및 다운로드임시경로
+excel.template=/home/hosting_users/h82214400/www/excel/template
+excel.download=/home/hosting_users/h82214400/www/excel/download
+
+# 첨부파일 업로드 용량
+# 10MB = 1024x100000
+attach.file.max.size=10241000
+attach.img.max.size=10241000
+
+# 메일
+mail_ip=
+mail_id=
+mail_pw=
+mail_address=
+
+server.host=http://www.prmna.pe.kr
+server.html.title=PRMNA
+
+#결제환경파일
+pgConfigPath=e:/java/Project/leehouse/src/ROOT/pg/lgdacomxs/

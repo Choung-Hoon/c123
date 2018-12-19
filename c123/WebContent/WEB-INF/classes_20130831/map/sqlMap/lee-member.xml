@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.member">
+
+	<typeAlias alias="Member" type="lee.bean.Member"/>
+	
+	<!--  User  -->
+	
+	<!-- User 재단 관리자 메인 신규 회원 count -->
+	<select id="getNewMemberMainCnt" resultClass="Integer" parameterClass="Map">
+	SELECT	count(*)		       
+		FROM	tb_member
+		WHERE 	1=1
+				AND retire_yn = 'N'
+				AND del_yn = 'N'
+				AND date_format(reg_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+ 		
+	</select>
+	
+	<!-- User 재단 관리자 메인 탈퇴 회원 count -->
+	<select id="getRetireMemberMainCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	count(*)		       
+		FROM	tb_member
+		WHERE 	1=1
+				AND retire_yn = 'Y'
+				AND del_yn = 'N'
+				AND date_format(retire_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+	
+	</select>
+	
+	<!--  User 총 갯수  -->
+	<select id="getMemberListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	count(*)		       
+		FROM	tb_member
+		WHERE 	1=1
+				AND retire_yn = 'N'
+				AND del_yn = 'N'
+				AND date_format(reg_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#userName#,'%') -- 이름
+  		</isEqual>
+		
+	</select>	
+	
+	
+	<!--  User 목록  -->
+	<select id="getMemberList" resultClass="Member" parameterClass="Map">				
+		SELECT	
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,DATE_FORMAT(reg_date, '%Y-%m-%d') as regDate
+				,DATE_FORMAT(mod_date, '%Y-%m-%d') as modDate
+
+		FROM	
+				tb_member
+		WHERE 	
+				1=1
+				AND retire_yn = 'N'
+				AND del_yn = 'N'
+				AND date_format(reg_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#userName#,'%') -- 이름  
+  		</isEqual>  
+		ORDER BY reg_date DESC
+	  	LIMIT $limitStartNum$,$limitEndNum$
+	</select>
+	
+	<!--  User 상세보기 -->	
+	<select id="getMember" resultClass="Member" parameterClass="Map">
+	  SELECT 
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+		WHERE 
+				userid = #userID#
+	
+	</select>
+	
+	<!--  User 상세보기 by mhlee-->	
+	<select id="getMemberForLogin" resultClass="Member" parameterClass="Map">
+	  SELECT 
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+		WHERE 
+				userid = #userID#
+			AND del_yn = 'N' 
+			AND retire_yn = 'N'	
+	</select>	
+	
+	
+	<!-- 탈퇴 회원 총 갯수  -->
+	<select id="getRetireMemberListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	count(*)		       
+		FROM	tb_member
+		WHERE 	1=1
+				AND retire_yn = 'Y'
+				AND del_yn = 'N'
+				AND date_format(retire_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%'||#userName#||'%')  -- 이름
+  		</isEqual>
+		
+	</select>	
+	  
+	
+	<!-- 탈퇴회원  목록  -->
+	<select id="getRetireMemberList" resultClass="Member" parameterClass="Map">				
+		SELECT	
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, DATE_FORMAT(retire_date, '%Y/%m/%d') as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+				,reg_date, mod_date		       
+		FROM	
+				tb_member
+		WHERE 	
+				1=1
+				AND retire_yn = 'Y'
+				AND del_yn = 'N'
+				AND date_format(retire_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like  CONCAT('%'||#userName#||'%') -- 이름  
+  		</isEqual>
+		ORDER BY reg_date DESC
+	  	LIMIT $limitStartNum$,$limitEndNum$
+	</select>
+	
+	
+	<!-- 사용자 등록 -->
+ 	<insert id="insertMember" parameterClass="Member">
+		INSERT INTO tb_member(
+			userid,	userpw,	user_type, name, jumin,
+			birthday, solar,sex, zipcode, address1,
+			address2, phone, mobile, email, email_yn,
+			sms_yn, news_yn, join_type, nation, ipin,
+		 	retire_yn, del_yn, reg_date, mod_date
+		)
+		VALUES 
+		(
+			#userid#, #userpw#,  #userType#, #name#, #jumin#,
+			#birthday#, #solar#, #sex#, #zipcode#, #address1#,
+			#address2#, #phone#, #mobile#, #email#, #emailYn#,
+			#smsYn#, #newsYn#, #joinType#, #nation#, #ipin#,
+			#retireYn#,	#delYn#, sysdate(), sysdate()
+			)
+
+	 </insert>	
+	 
+	 <update id="updateMember" parameterClass="Member">
+	 <![CDATA[
+		UPDATE tb_member
+		SET 
+  			mod_date = sysdate()
+  			,userpw = #userpw#	
+			,zipcode = #zipcode#	
+			,address1 = #address1#	
+			,address2 = #address2#	
+			,phone = #phone#	
+			,mobile = #mobile#	
+			,email = #email#	
+			,email_yn = #emailYn#	
+			,sms_yn = #smsYn#
+			,birthday = #birthday#	
+			,news_yn = #newsYn#
+			,solar = #solar#		
+			
+		WHERE 
+			userid = #userid#
+	]]>
+	 </update>
+	 
+	 
+	 
+	 
+	 
+ 	<!-- 프런트 회원 탈퇴  -->
+	<update id="updateRetireMember" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_member
+	  	SET 
+			retire_yn = 'Y'
+			,retire_date = date_format(sysdate(), '%Y%m%d')
+		WHERE 
+			userid = #userID#
+		 
+	]]>
+	</update>	
+
+ 	<!-- 관리단 회원 삭제  -->
+	<update id="deleteMember" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_member
+	  	SET 
+			retire_yn = 'Y'
+			, del_yn = 'Y'  
+		WHERE 
+			userid = #userID#
+		 
+	]]>
+	</update>	
+
+
+ 	<!--  회원 목록 (엑셀) -->
+	<select id="getUserListForExcel" resultClass="Member" parameterClass="Map">
+		SELECT	
+				userid, user_type as userType 
+				,name, birthday, solar 
+				,sex, zipcode, address1
+				,address2, phone, mobile
+				,email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,DATE_FORMAT(reg_date, '%Y-%m-%d') as regDate
+				,DATE_FORMAT(mod_date, '%Y-%m-%d') as modDate
+
+		FROM	
+				tb_member
+		WHERE 	
+				1=1
+				AND retire_yn = 'N'
+				AND del_yn = 'N'
+				AND date_format(reg_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#userName#,'%') -- 이름  
+  		</isEqual>  
+		ORDER BY reg_date DESC
+    </select>
+
+	<!-- 탈퇴 회원 목록 (엑셀) -->
+	<select id="getUserListRetireForExcel" resultClass="Member" parameterClass="Map">
+		SELECT	
+				userid, user_type as userType 
+				,name, birthday, solar 
+				,sex, zipcode, address1
+				,address2, phone, mobile
+				,email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,DATE_FORMAT(reg_date, '%Y-%m-%d') as regDate
+				,DATE_FORMAT(mod_date, '%Y-%m-%d') as modDate
+
+		FROM	
+				tb_member
+		WHERE 	
+				1=1
+				AND retire_yn = 'Y'
+				AND del_yn = 'N'
+				AND date_format(retire_date, '%Y%m%d')  between date_format(#sDate#, '%Y%m%d')   and  date_format(#eDate#, '%Y%m%d') 
+		<isEqual property="userType" compareValue="1">
+		  AND user_type = '1' -- 학생
+		</isEqual>
+ 		<isEqual property="userType" compareValue="2">
+		  AND user_type = '2'  -- 일반  
+  		</isEqual>
+		
+		
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#userID#,'%') OR name like CONCAT('%',#userName#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#userID#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like  CONCAT('%'||#userName#||'%') -- 이름  
+  		</isEqual>
+		ORDER BY reg_date DESC
+    </select>
+        
+    <!-- 비밀번호 찾기에서 비번 임시 번호로  변경  -->
+    <update id="updateFindPWD" parameterClass="Map">
+        <![CDATA[
+        UPDATE tb_member
+        SET 
+            userpw = #userpwd#
+        WHERE 
+            userid = #userID#
+            and jumin = #userJumin#
+            and name = #userName#
+            
+        ]]>
+     </update>   
+		
+	<!-- 아이디 찾기 -->
+    <select id="getFindID" resultClass="Member" parameterClass="Map">
+         SELECT          		
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1  
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+        WHERE
+                1=1
+                and name = #userName#
+                and jumin = #userJumin#
+		order by regDate desc
+		limit 1
+    </select>
+    
+    <!-- 아이디 찾기 -->
+    <select id="getFindUser2" resultClass="Member" parameterClass="Map">
+         SELECT          		
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1  
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+        WHERE
+                1=1
+                and name = #userName#
+                and jumin = #userJumin#
+                and userid = #userID#
+		order by regDate desc
+		limit 1
+    </select>
+    <!-- 아이디 찾기 -->
+    <select id="getFindUser3" resultClass="Member" parameterClass="Map">
+         SELECT          		
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1  
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+        WHERE
+                name = #userName#
+                and userid = #userID#
+		order by regDate desc
+		limit 1
+    </select>
+    <!-- 주민번호 중복가입. -->
+    <select id="getMemberJumin" resultClass="Member" parameterClass="Map">
+         SELECT          		
+				userid, userpw, user_type as userType, name, jumin
+				,birthday, solar, sex, zipcode, address1  
+				,address2, phone, mobile, email, email_yn as emailYn
+				,sms_yn as smsYn, news_yn as newsYn, join_type as joinType, nation
+				,ipin, retire_yn as retireYn, retire_date as retireDate, del_yn as delYn
+				,reg_date as regDate, mod_date as modDate	
+		FROM 
+				tb_member
+        WHERE
+                jumin = #jumin#
+		limit 1
+    </select>
+    
+</sqlMap>

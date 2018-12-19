@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.admin">
+
+	<typeAlias alias="Admin" type="lee.bean.Admin"/>
+
+	<!-- 등록 -->
+	<insert id="insertAdmin" parameterClass="Admin">
+		INSERT INTO tb_admin (
+		  userid,
+		  userpw,
+		  user_type,
+		  name,
+		  dept,
+		  phone,
+		  email,
+		  loc_cd,
+		  org_cd,
+		  org_name,
+		  auth,
+		  reg_id,
+		  reg_date,
+		  mod_id,
+		  mod_date,
+		  valid_st_date,
+		  valid_end_date,
+		  cmpn_nm,
+   		  cmpn_url,
+ 		  cmpn_addr,
+		  cmpn_zip,
+          cmpn_fax,
+          cmpn_tel
+		  )
+		VALUES (
+		  #userid#,
+		  #userpw#,
+		  #userType#,
+		  #name#,
+		  #dept#,
+		  #phone#,
+		  #email#,
+		  #locCd#,
+		  #orgCd#,
+		  #orgName#,
+		  #auth#,
+		  #regId#,
+		  CURDATE(),
+		  #modId#,
+		  CURDATE(),
+		  #validStDate#,
+		  #validEndDate#,
+		  #cmpnNm#,
+   		  #cmpnUrl#,
+ 		  #cmpnAddr#,
+		  #cmpnZip#,
+          #cmpnFax#,
+          #cmpnTel#		 
+		  )
+	</insert>
+          
+	<!--  삭제  -->
+	<update id="deleteAdmin" parameterClass="Map">
+	<![CDATA[
+		DELETE FROM tb_admin
+		WHERE userid IN ( '$useridList$' )
+	]]>
+	</update>
+
+	<!-- 수정 -->
+	<update id="updateAdmin" parameterClass="Admin">
+	<![CDATA[
+		UPDATE tb_admin
+		  SET
+		      USER_TYPE = #userType#,
+		      NAME = #name#,
+		      VALID_ST_DATE = #validStDate#,
+		      VALID_END_DATE = #validEndDate#,
+		  	  DEPT = #dept#,
+		  	  PHONE = #phone#,
+		  	  EMAIL = #email#,
+		  	  LOC_CD = #locCd#,
+		  	  ORG_CD = #orgCd#,
+		  	  ORG_NAME = #orgName#,
+		  	  AUTH = #auth#,
+		  	  MOD_ID = #modId#,
+		  	  MOD_DATE = CURDATE(),
+		  	  cmpn_nm	= #cmpnNm#,		
+	   		  cmpn_url	= #cmpnUrl#,     
+	 		  cmpn_addr	= #cmpnAddr#,    
+			  cmpn_zip	= #cmpnZip#,     
+	          cmpn_fax	= #cmpnFax#,     
+	          cmpn_tel 	= #cmpnTel#     
+		WHERE userid = #userid#
+	]]>
+	</update>
+
+    <!-- 상세정보 -->
+	<select id="getAdmin" resultClass="Admin" parameterClass="Map">
+		SELECT userid,
+		       userpw,
+		       user_type as userType,
+		       name,
+		       dept,
+		       phone,
+		       email,
+		       loc_cd as locCd,
+		       org_cd as orgCd,
+		       org_name as orgName,
+		       auth,
+		       ip_list as ipList,
+		       reg_id as regId,
+	           DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate,
+			   mod_id as modId,
+			   DATE_FORMAT(mod_date, '%Y/%m/%d') as modDate,
+			   DATE_FORMAT(access_date, '%Y/%m/%d %H:%i:%s') as accessDate,
+			   DATE_FORMAT(valid_st_date, '%Y/%m/%d') as validStDate,
+			   DATE_FORMAT(valid_end_date, '%Y/%m/%d') as validEndDate,
+			   cmpn_nm 		as cmpnNm,
+	   		   cmpn_url		as cmpnUrl,
+	 		   cmpn_addr	as cmpnAddr,
+			   cmpn_zip		as cmpnZip,
+	           cmpn_fax		as cmpnFax,
+	           cmpn_tel		as cmpnTel
+		 FROM tb_admin
+	    WHERE userid = #userid#
+    </select>
+
+	<!-- 목록 총개수(페이징) -->
+	<select id="getAdminListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT count(*)
+		  FROM tb_admin
+		 WHERE 1=1
+		<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#searchValue#,'%') OR name like CONCAT('%',#searchValue#,'%') )
+		</isEqual>
+		<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#searchValue#,'%') -- userid
+		</isEqual>
+ 		<isEqual property="searchType" compareValue="name">
+		  AND name like '%'||#searchValue#||'%' -- 이름
+  		</isEqual>
+  		<isEqual property="searchType" compareValue="valid">
+		<![CDATA[
+		  AND date_format(valid_end_date, '%Y%m%d')  >=  date_format(CURDATE(), '%Y%m%d') -- 유효
+			]]>
+		</isEqual>
+		<isEqual property="searchType" compareValue="invalid">
+			<![CDATA[
+			  AND date_format(valid_end_date, '%Y%m%d')  <  date_format(CURDATE(), '%Y%m%d') -- 만료
+			]]>
+		</isEqual>
+   	</select>
+
+    <!-- 목록 (페이징) -->
+	<select id="getAdminList" resultClass="Admin" parameterClass="Map">
+		SELECT userid,
+		       user_type as userType,
+		       name,
+		       dept,
+		       phone,
+		       email,
+		       loc_cd as locCd,
+		       org_cd as orgCd,
+		       org_name as orgName,
+		       auth,
+		       reg_id as regId,
+	           DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate,
+			   mod_id as modId,
+			   DATE_FORMAT(mod_date, '%Y/%m/%d') as modDate,
+			   DATE_FORMAT(access_date, '%Y/%m/%d %H:%i:%s') as accessDate,
+			   DATE_FORMAT(valid_st_date, '%Y/%m/%d') as validStDate,
+			   DATE_FORMAT(valid_end_date, '%Y/%m/%d') as validEndDate,
+			   cmpn_nm 		as cmpnNm,
+	   		   cmpn_url		as cmpnUrl,
+	 		   cmpn_addr	as cmpnAddr,
+			   cmpn_zip		as cmpnZip,
+	           cmpn_fax		as cmpnFax,
+	           cmpn_tel		as cmpnTel
+		 FROM tb_admin
+	    WHERE 1=1
+	<isEqual property="searchType" compareValue="all">
+		  AND ( userid like CONCAT('%',#searchValue#,'%') OR name like CONCAT('%',#searchValue#,'%') )
+	</isEqual>
+	<isEqual property="searchType" compareValue="userid">
+		  AND userid like CONCAT('%',#searchValue#,'%') -- userid
+	</isEqual>
+	<isEqual property="searchType" compareValue="name">
+		  AND name like CONCAT('%',#searchValue#,'%') -- 이름
+	</isEqual>
+	<isEqual property="searchType" compareValue="valid">
+		<![CDATA[
+		  AND date_format(valid_end_date, '%Y%m%d')  >=  date_format(CURDATE(), '%Y%m%d') -- 유효
+		]]>
+	</isEqual>
+	<isEqual property="searchType" compareValue="invalid">
+		<![CDATA[
+		  AND date_format(valid_end_date, '%Y%m%d')  <  date_format(CURDATE(), '%Y%m%d') -- 만료
+		]]>
+	</isEqual>
+  	  ORDER BY reg_date DESC
+	  LIMIT $pageNum$,$listSize$
+    </select>
+
+	<!-- 최근접속일시 -->
+	<update id="updateAccessDateAdmin" parameterClass="Map">
+		UPDATE tb_admin
+		   SET access_date = NOW()
+		 WHERE userid = #userid#
+	</update>
+
+	<!-- 이메일 -->
+	<update id="updateEmailAdmin" parameterClass="Map">
+		UPDATE tb_admin
+		   SET email = #email#
+		 WHERE userid = #userid#
+	</update>
+
+	<!-- 연락처 -->
+	<update id="updatePhoneAdmin" parameterClass="Map">
+		UPDATE tb_admin
+		   SET phone = #phone#
+		 WHERE userid = #userid#
+	</update>
+
+	<!-- 비밀번호 -->
+	<update id="updatePwdAdmin" parameterClass="Map">
+		UPDATE tb_admin
+		   SET userpw = #userpw#
+		 WHERE userid = #userid#
+	</update>
+
+	<!-- IP 목록 -->
+	<update id="updateIpListAdmin" parameterClass="Map">
+		UPDATE tb_admin
+		   SET ip_list = #ipList#
+		 WHERE userid = #userid#
+	</update>
+
+
+	<!-- User 유효 회원 count -->
+	<select id="getValidMemberMainCnt" resultClass="Integer" parameterClass="Map">
+
+		SELECT	count(*)
+		FROM	tb_admin
+		WHERE 	1=1
+		<![CDATA[
+			AND date_format(valid_end_date, '%Y%m%d')  >=  date_format(CURDATE(), '%Y%m%d')
+		]]>
+	</select>
+
+	<!-- User 만기 회원 count -->
+	<select id="getInvalidMemberMainCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	count(*)
+		FROM	tb_admin
+		WHERE 	1=1
+		<![CDATA[
+			AND date_format(valid_end_date, '%Y%m%d')  <  date_format(CURDATE(), '%Y%m%d')
+		]]>
+	</select>
+
+	<!-- 유효기간 변경-->
+	<update id="updateValidDate" parameterClass="Map">
+		UPDATE tb_admin
+		   SET user_type = #userType#, valid_st_date = #validStDate#, valid_end_date = #validEndDate#
+		 WHERE userid = #userid#
+	</update>
+
+</sqlMap>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com// DTD SQL Map Config 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings useStatementNamespaces="true"/>
+
+	<!-- Configure a built-in transaction manager.  If you're using an
+       app server, you probably want to use its transaction manager
+       and a managed datasource -->
+
+  <!--  톰캣 -->
+	<transactionManager type="JDBC">
+	    <dataSource type="JNDI">
+	      <property name="DataSource" value="java:comp/env/jdbc/jndi_lee"/>
+	    </dataSource>
+	</transactionManager>
+
+	<!-- 게시판 -->
+	<sqlMap resource="map/sqlMap/lee-board.xml"/>
+
+	<!-- 우편번호 -->
+	<sqlMap resource="map/sqlMap/lee-zipcode.xml"/>
+	
+	<!-- 사용자 -->
+	<sqlMap resource="map/sqlMap/lee-member.xml"/>
+	
+	<!-- 관리자 -->
+	<sqlMap resource="map/sqlMap/lee-admin.xml"/>
+	
+	<!-- 코드 -->
+	<sqlMap resource="map/sqlMap/lee-code.xml"/>
+		
+</sqlMapConfig>

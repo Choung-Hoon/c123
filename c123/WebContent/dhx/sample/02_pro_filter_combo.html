@@ -1,0 +1,27 @@
+﻿<link rel="STYLESHEET" type="text/css" href="../dhx/dhtmlxgrid.css">
+<link rel="stylesheet" type="text/css" href="../skins/dhtmlxgrid_dhx_skyblue.css">
+<link rel="STYLESHEET" type="text/css" href="../dhtmlxCombo/dhtmlxcombo.css">
+<script  src="../dhtmlxcommon.js"></script>
+<script  src="../dhtmlxgrid.js"></script>
+<script  src="../ext/dhtmlxgrid_srnd.js"></script>
+<script  src="../ext/dhtmlxgrid_filter.js"></script>    
+<script  src="../dhtmlxgridcell.js"></script>
+<script  src="../dhtmlxCombo/dhtmlxcombo.js"></script>
+ 
+ 
+<div id="gridbox" style="width: 600px; height: 270px; background-color:white;"></div>
+<script>dhx_globalImgPath = "../dhtmlxCombo/imgs/";
+mygrid = new dhtmlXGridObject('gridbox');
+mygrid.setImagePath("../imgs/");
+mygrid.setHeader("Sales,Book Title,Author,Price,In Store,Date of Publication");
+mygrid.attachHeader("&nbsp;,#combo_filter,#combo_filter,&nbsp;,#cspan,#cspan");
+mygrid.setInitWidths("50,150,120,80,80,80");
+mygrid.enableAutoWidth(true);
+mygrid.setColAlign("right,left,left,right,center,left");
+mygrid.setColTypes("dyn,ed,ed,price,ch,ro");
+mygrid.setColSorting("int,str,str,int,str,str");
+mygrid.setSkin("dhx_skyblue");
+mygrid.init();
+mygrid.enableSmartRendering(true);
+mygrid.loadXML("../common/500.xml");
+</script>

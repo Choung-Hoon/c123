@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.product">
+
+	<typeAlias alias="Product" type="lee.bean.Product"/>
+	<typeAlias alias="ProductFile" type="lee.bean.ProductFile"/>
+
+	<!--  Board  -->
+	<!--  게시물 총 갯수  -->
+	<select id="getProductListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	COUNT(*)
+		FROM	tb_product
+		WHERE 	1 = 1
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="jobKind">
+				A.jobKind like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="companyNm">
+				A.companyNm like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="handoverCond">
+				A.handoverCond like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="contents">
+				A.contents like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+	</select>
+
+	<!--  검색 리스트  총 갯수  -->
+	<select id="getSearchProductListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	COUNT(*)
+		FROM	tb_product
+		WHERE 	1 = 1
+			<isNotEmpty prepend="AND" property="searchValue">
+				( company_nm like CONCAT('%',#searchValue#,'%') OR contents like CONCAT('%',#searchValue#,'%') )
+			</isNotEmpty>
+	</select>
+
+	<!--  상품 목록  -->
+	<select id="getProductList" resultClass="Product" parameterClass="Map">
+		SELECT	 product_id as  productId
+				,job_kind	as  jobKind
+				,company_nm as  companyNm
+				,handover_cond as handoverCond
+				,contents
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+		FROM 	tb_product A
+		WHERE 	1 = 1
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="jobKind">
+				A.jobKind like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="companyNm">
+				A.companyNm like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="handoverCond">
+				A.handoverCond like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="contents">
+				A.contents like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+   		ORDER BY product_id DESC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  상품 목록  -->
+	<select id="getProductImgList" resultClass="Product" parameterClass="Map">
+		SELECT	 A.product_id as  productId
+				,A.job_kind	as  jobKind
+				,A.company_nm as  companyNm
+				,A.handover_cond as handoverCond
+				,A.contents
+				,A.reg_id as regId
+				,A.reg_name as regName
+				,A.reg_date as regDate
+				,B.rname as thumnailRname
+				,B.cname as thumnailCname
+		FROM 	tb_product A
+			LEFT JOIN tb_product_file B on A.product_id = B.product_id
+		WHERE 	1 = 1
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="jobKind">
+				A.jobKind like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="companyNm">
+				A.companyNm like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="handoverCond">
+				A.handoverCond like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="contents">
+				A.contents like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+   		ORDER BY A.product_id DESC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  검색 리스트  -->
+	<select id="getSearchProductList" resultClass="Product" parameterClass="Map">
+		SELECT	 product_id as  productId
+				,job_kind	as  jobKind
+				,company_nm as  companyNm
+				,handover_cond as handoverCond
+				,contents
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+		FROM 	tb_product A
+		WHERE 	1 = 1
+			<isNotEmpty prepend="AND" property="searchValue">
+				( company_nm like CONCAT('%',#searchValue#,'%') OR contents like CONCAT('%',#searchValue#,'%') )
+			</isNotEmpty>
+   		ORDER BY product_id DESC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  검색 리스트  -->
+	<select id="getAllProductList" resultClass="Product" parameterClass="Map">
+		SELECT	 product_id as  productId
+				,job_kind	as  jobKind
+				,company_nm as  companyNm
+				,handover_cond as handoverCond
+				,contents
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+		FROM 	tb_product A
+		WHERE 	1 = 1
+   		ORDER BY product_id DESC
+	</select>
+
+	<!-- 마지막 등록된 글 가져옴. -->
+	<select id="getProductMaxId" resultClass="Integer">
+		SELECT IFNULL(max(product_id), 0)
+		FROM tb_product
+	</select>
+
+	<!--  상품 상세보기  -->
+	<select id="getProduct" resultClass="Product" parameterClass="Map">
+		SELECT	 product_id as  productId
+				,job_kind	as  jobKind
+				,company_nm as  companyNm
+				,handover_cond as handoverCond
+				,contents
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+		FROM 	tb_product A
+		WHERE	product_id = #productId#
+	</select>
+
+
+	<!-- 저장하기  -->
+	<insert id="insertProduct" parameterClass="Product">
+		INSERT INTO tb_product(
+			 product_id
+			,job_kind
+			,company_nm
+			,handover_cond
+			,contents
+			,reg_id
+			,reg_name
+			,reg_date
+		)
+		VALUES(
+		     #productId#
+			,#jobKind#
+			,#companyNm#
+			,#handoverCond#
+			,#contents#
+			,#regId#
+			,#regName#
+			,CURDATE()
+		)
+		<selectKey resultClass="int">
+	    	SELECT  LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 수정하기  -->
+	<update id="updateProduct" parameterClass="Product">
+		UPDATE tb_product
+		SET reg_date = CURDATE()
+		<isNotEmpty prepend="," property="jobKind">
+			job_kind = #jobKind#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="companyNm">
+			company_nm = #companyNm#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="handoverCond">
+			handover_cond = #handoverCond#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="contents">
+			contents = #contents#
+		</isNotEmpty>
+		WHERE product_id = #productId#
+	</update>
+
+	<!-- 삭제하기 -->
+	<delete id="deleteProduct" parameterClass="Integer">
+		DELETE
+		FROM tb_product
+		WHERE product_id = #productId#
+	</delete>
+
+	<!--  BoardFile  -->
+	<!--  목록  -->
+	<select id="getProductFileList" resultClass="ProductFile" parameterClass="Integer">
+		SELECT	bfile_id as bfileId
+				,product_id as productId
+				,file_type as fileType
+				,rname
+				,cname
+				,reg_date as regDate
+				,descript
+		FROM 	tb_product_file
+		WHERE 	product_id = #productId#
+		ORDER BY bfileId ASC
+	</select>
+
+	<!-- 등록하기 -->
+	<insert id="insertProductFile" parameterClass="ProductFile">
+		INSERT INTO tb_product_file(
+				product_id
+				,file_type
+				,rname
+				,cname
+				,reg_date
+				<isNotEmpty property="descript">
+					,descript
+				</isNotEmpty>
+		)
+		VALUES (
+				#productId#
+				,#fileType#
+				,#rname#
+				,#cname#
+				,CURDATE()
+				<isNotEmpty property="descript">
+					,#descript#
+				</isNotEmpty>
+		)
+	</insert>
+
+	<!-- 수정하기 -->
+	<update id="updateProductFile" parameterClass="ProductFile">
+		UPDATE tb_product_file
+		SET	file_type = #fileType#
+			,rname = #rname#
+			,cname = #cname#
+		<isNotEmpty prepend="," property="descript">
+			descript = #descript#
+		</isNotEmpty>
+		WHERE bfile_id = #bfileId#
+	</update>
+
+	<!-- 삭제하기 -->
+	<delete id="deleteProductFile" parameterClass="Integer">
+		DELETE
+		FROM tb_product_file
+		WHERE bfile_id = #bfileId#
+	</delete>
+
+
+</sqlMap>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.user">
+
+	<typeAlias alias="User" type="lee.bean.User"/>
+	
+	<!--  User  -->
+	<!--  User 총 갯수  -->
+	<select id="getUserListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	count(*)		       
+		FROM	tb_member
+	</select>	
+	
+	
+	<!--  User 목록  -->
+	<select id="getUserList" resultClass="User" parameterClass="Map">				
+		SELECT	*		       
+		FROM	tb_member	
+	</select>
+	
+	
+	<!-- User 수정 -->
+	<update id="getUserUpdate" parameterClass="User">
+		UPDATE tb_member 
+		SET name = #name#
+	</update>	
+	
+	 <!-- User 삭제 -->
+	<delete id="getUserDelete" parameterClass="Map">
+		DELETE FROM tb_member WHERE user_id  = $user_id$ 
+	</delete>
+		
+</sqlMap>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.zipcode">
+
+  	<typeAlias alias="Zipcode" type="lee.bean.Zipcode"/>
+
+	<!-- 우편번호 조회 -->
+	<select id="getZipcodeList" resultClass="Zipcode" parameterClass="Map">
+		SELECT zipcode, sido, gubun, dong, bunji
+		FROM tb_zipcode
+		WHERE 1=1 
+			<isNotEmpty prepend="AND" property="searchValue">
+				(gubun like CONCAT('%',#searchValue#,'%') OR dong like CONCAT('%',#searchValue#,'%') )
+			</isNotEmpty>			
+			<isEmpty prepend="AND" property="searchValue">
+				1=2
+			</isEmpty> 
+	</select>
+
+</sqlMap>

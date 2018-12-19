@@ -1,0 +1,247 @@
+/* 공통 */
+.mat25{margin-top:25px;}
+.mat20{margin-top:20px;}
+.pat20{padding-top:20px;}
+.mat20b60{margin:20px 0 60px 0;}
+.mal16{margin-left:16px;}
+.mal16b20{margin:0 0 20px 16px;}
+.padr33{padding-right:33px;}
+.pab25{padding-bottom:25px;}
+
+/* color */
+.green{color:#5fa21d;}
+.orange{color:#ff6600;}
+.orange2{color:#ff9900;}
+.skyblue{color:#80ace9;}
+.blue{color:#3472d7;}
+
+/* ul_list */
+.ul_list{}
+.ul_list li{background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; padding-left:11px;}
+.ul_list .none{background:none;}
+.ul_list .mat{margin-top:5px;}
+
+.ul_list_square{margin-left:16px;}
+.ul_list_square li{background:url(/images/common/bu_square.gif) no-repeat left 6px; padding-left:11px;}
+.ul_list_square .none{background:none;}
+.ul_list_square .mat{margin-top:5px;}
+.ul_list_square .first_letter_green{padding-left:36px; color:#5fa21d;}
+
+/* 버튼 */
+.btn_center{text-align:center; margin-top:11px;}
+.btn_center2{text-align:center; margin-top:20px;}
+.btn_center3{text-align:center; margin-top:11px; margin-bottom:11px;}
+.btn_right{text-align:right; margin:20px 0 10px 0;}
+.btn_right2{text-align:right; margin:20px 0 10px 0;}
+.btn_right2 a{margin-left:5px;}
+.btn_left{text-align:left; margin-top:11px; padding-left:20px;}
+.btn_left .first_letter{margin-left:-20px;}
+
+/* naviation */
+.ul_nav{overflow:hidden; background:url(/images/ssb/bg_nav.gif) repeat-x left bottom;}
+.ul_nav li{float:left; margin-right:2px;}
+.ul_nav2{overflow:hidden; background:url(/images/ssb/bg_nav.gif) repeat-x left bottom; margin-bottom:15px;}
+.ul_nav2 li{float:left; margin-right:2px;}
+
+
+
+
+/* 실명인증 */
+.certification_box{overflow:hidden; padding:30px 0 0 16px;}
+.certification_box h3{font-size:100%; background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; padding-left:12px; margin-bottom:5px;}
+.certification{float:left; }
+.certification .bg{background:url(/images/member/bg_login_1.gif) no-repeat left top; width:360px; height:120px;position:relative; }
+.certification .bg p.radio{padding-top:11px; text-align:center;}
+.certification .bg p.radio input{width:14px; height:14px;}
+.certification .bg p.radio label{position:relative; top:1px; margin:0 12px 0 5px;}
+.certification .bg .name{ width:278px; padding:13px 0 0 13px;}
+.certification .bg .name p{height:25px;}
+.certification .bg .name label{float:left; display:block; width:94px; text-align:right; margin-right:10px; }
+.certification .bg .name span{margin:0 3px 0 3px;}
+.certification .bg .name .inputbox1{border:1px solid #ccc; width:166px; height:20px;}
+.certification .bg .name .inputbox2{border:1px solid #ccc; width:77px; height:20px;}
+.certification .bg .input_btn{position:absolute; right:17px; top:41px;}
+.ipin{float:left; padding-left:20px;}
+.ipin div{background:url(/images/member/bg_login_2.gif) no-repeat left top; width:184px; height:77px; padding:43px 0 0 45px; }
+
+
+/* h2 */
+.h2{background:url(/images/common/bu_h2.gif) no-repeat left 2px; font-size:100%; color:#5fa21d; padding-left:16px; margin-bottom:10px;}
+.h2_top{background:url(/images/common/bu_h2.gif) no-repeat left 2px; font-size:100%; color:#5fa21d; padding-left:16px; margin:23px 0 10px 0;}
+.h2_top_mn0{background:url(/images/common/bu_h2.gif) no-repeat left 2px; font-size:100%; color:#5fa21d; padding-left:16px;}
+.h2_top_board{background:url(/images/common/bu_h2.gif) no-repeat left 2px; font-size:100%; color:#5fa21d; padding-left:16px; float:left;}
+
+/* h3 */
+.h3{background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; font-size:100%;  padding-left:8px; margin-bottom:5px;}
+.h3_top{background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; font-size:100%;  padding-left:8px; margin:21px 0 5px 0;}
+
+/* 약관 */
+.agreement{width:625px; height:300px; overflow:auto; border:1px solid #ccc; padding:10px;}
+.agreement2{width:625px; height:250px; overflow:auto; border:1px solid #ccc; padding:10px;}
+
+/* 팝업 */
+.id_search_box{width:230px; height:160px; border:1px solid #80ace9; text-align:center; position:relative;}
+.id_search_box h2{margin:3px; background:#80ace9; color:#fff; font-size:100%; font-weight:normal; height:14px; padding:3px 0 5px 7px; text-align:left;}
+.id_search_box p{margin-top:15px;}
+.id_search_box p.close{position:absolute; right:5px; bottom:5px;}
+.id_search_box p img{vertical-align:middle;}
+.id_search_box p .inputbox{border:1px solid #ccc; width:126px; height:20px;}
+
+.post_search_box{width:300px; height:auto; border:1px solid #80ace9; text-align:center; position:relative; padding-bottom:40px;}
+.post_search_box h2{margin:3px; background:#80ace9; color:#fff; font-size:100%; font-weight:normal; height:14px; padding:3px 0 5px 7px; text-align:left;}
+.post_search_box p{margin-top:10px;}
+.post_search_box p.title{text-align:left; margin-left:9px;}
+.post_search_box p.close{position:absolute; right:5px; bottom:5px;}
+.post_search_box p .inputbox{border:1px solid #ccc; width:126px; height:20px;}
+.post_search_box p img{vertical-align:middle;}
+.post_search_box .post_list{width:280px; height:95px; background:#f4f4f4; text-align:left; padding:9px 0 0 12px; overflow:auto;}
+
+.post_search_box2{width:300px; height:60px; border:1px solid #80ace9; text-align:center; position:relative; padding-bottom:50px;}
+.post_search_box2 h2{margin:3px; background:#80ace9; color:#fff; font-size:100%; font-weight:normal; height:14px; padding:3px 0 5px 7px; text-align:left;}
+.post_search_box2 p{margin-top:20px;}
+.post_search_box2 p.title{text-align:left; margin-left:9px;}
+.post_search_box2 p.close{position:absolute; right:5px; bottom:5px;}
+.post_search_box2 p .inputbox{border:1px solid #ccc; width:126px; height:20px;}
+.post_search_box2 p img{vertical-align:middle;}
+.post_search_box2 .post_list{width:280px; height:95px; background:#f4f4f4; text-align:left; padding:9px 0 0 12px; overflow:auto;}
+
+/* 가입완료 */
+.completion{background:url(/images/member/bg_completion.gif) no-repeat 107px top; text-align:center; margin-top:60px;}
+.completion p{margin:0 0 16px 214px; text-align:left;}
+
+.completion_box{margin-left:113px; width:444px;}
+.completion2{background:url(/images/ssb/bg_scholarship_end.gif) no-repeat left top; text-align:center; margin-top:60px; padding-bottom:16px;}
+.completion2 p{margin:0 0 16px 116px; text-align:left;}
+
+/* 로그인 */
+.login{margin-left:80px; }
+.login_box{background:url(/images/member/bg_login_box.gif) no-repeat left top; width:318px; height:100px; padding:20px 0 0 172px; position:relative; }
+.login_box p{height:29px;}
+.login_box p.btn{position:absolute; right:57px; top:21px;}
+.login_box p.btn2{padding:8px 0 0 58px;}
+.login_box label{float:left; display:block; width:48px; text-align:right; margin-right:10px; padding-top:4px;}
+.login_box .inputbox1{border:1px solid #ccc; width:146px; height:20px;}
+
+/* 대상자 확인 */
+.login2{margin-left:80px; }
+.login_box2{background:url(/images/ssb/bg_scholarship.gif) no-repeat left top; width:358px; height:86px; padding:34px 0 0 132px; position:relative; }
+.login_box2 p{height:29px;}
+.login_box2 p.btn{position:absolute; right:57px; top:34px;}
+.login_box2 label{float:left; display:block; width:78px; text-align:right; margin-right:10px; padding-top:4px;}
+.login_box2 .inputbox1{border:1px solid #ccc; width:150px; height:20px;}
+.login_box2 .inputbox2{border:1px solid #ccc; width:68px; height:20px;}
+
+/* 아이디/비밀번호 찾기 */
+.id_pass_box{overflow:hidden; padding:30px 0 0 0;}
+.id_pass_box .id_box{float:left; }
+.id_pass_box .id_box .id_bg{ width:304px; height:85px; padding:35px 0 0 11px; background:url(/images/member/bg_id_search_box.gif) no-repeat left top; position:relative; }
+.id_pass_box .id_box .id_bg p{height:28px;}
+.id_pass_box .id_box .id_bg label{float:left; display:block; width:72px; text-align:right; margin-right:10px; padding-top:4px; }
+.id_pass_box .id_box .id_bg span{margin:0 3px 0 3px;}
+.id_pass_box .password_box{float:left; padding-left:15px;}
+.id_pass_box .password_box .password_bg{background:url(/images/member/bg_id_search_box.gif) no-repeat left top; width:304px; height:100px; position:relative;  padding:20px 0 0 11px; }
+.id_pass_box .password_box .password_bg p{height:28px;}
+.id_pass_box .password_box .password_bg label{float:left; display:block; width:72px; text-align:right; margin-right:10px; padding-top:4px; }
+.id_pass_box .password_box .password_bg span{margin:0 3px 0 3px;}
+.id_pass_box  .inputbox1{border:1px solid #ccc; width:150px; height:20px;}
+.id_pass_box  .inputbox2{border:1px solid #ccc; width:68px; height:20px;}
+.id_pass_box  .inputbox3{border:1px solid #ccc; width:150px; height:20px;}
+.id_pass_box  .input_btn{position:absolute; right:13px; top:36px;}
+
+/* conheader */
+.conheader{background:url(/images/ssb/bg_conheader.gif) no-repeat left top; width:645px; height:120px; margin-top:8px;}
+.conheader p{width:450px; padding:16px 20px 0 181px;}
+
+.conheader2{background:url(/images/ssb/bg_conheader2.gif) no-repeat left top; width:645px; height:120px; margin-top:8px;}
+.conheader2 p{width:450px; padding:16px 20px 0 181px;}
+
+/* hi_seoul_box */
+.hi_seoul_box{overflow:hidden;}
+.hi_seoul_box img{float:left;}
+.hi_seoul_box ul{float:left; width:470px; margin:1px 0 0 11px;}
+.hi_seoul_box ul li{background:url(/images/common/bu_square.gif) no-repeat left 5px; padding-left:8px;}
+.hi_seoul_box ul li.none{background:none; padding-top:3px;}
+.hi_seoul_box ul li.none img{text-align:right; float:right;}
+
+.scholarship_bottom{background:url(/images/ssb/bg_scholarship_bottom.gif) no-repeat left bottom; padding-bottom:10px; width:645px; position:relative;}
+.scholarship_top{overflow:hidden;background:url(/images/ssb/bg_scholarship_top.gif) repeat-y left top; padding:15px 15px 8px 15px;}
+.scholarship_top p{background:url(/images/common/bu_square.gif) no-repeat left 6px; padding-left:9px;}
+.scholarship_top p.arrow{background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; padding-left:11px; font-weight:bold;}
+.scholarship_top p.arrow_nor{background:url(/images/common/bu_gray_arrow.gif) no-repeat left 4px; padding-left:11px;}
+.scholarship_top p.none{background:none; }
+.scholarship_top p.btn{position:absolute; right:12px; bottom:14px; background:none;}
+.scholarship_top p.bg{float:left;  background:none; }
+.scholarship_top p.bg2{float:left;  background:none; padding-top:8px;}
+.scholarship_top p.bg2 img{padding-bottom:2px;}
+.scholarship_top img{padding-left:11px;}
+
+/* form_board */
+.form_board{border-top:2px solid #8ccd4a; width:100%;}
+.form_board.table_top{border-top:0;}
+.form_board th{font-weight:normal; padding:6px 0 4px 0; background:#f4f4f4; border-bottom:1px solid #e3e3e3; text-align:center; border-right:1px solid #e3e3e3;}
+.form_board td{padding:6px 0 6px 11px;  border-bottom:1px solid #e3e3e3;}
+.form_board td.radio .radio_box{width:14px ; height:14px;}
+.form_board td.radio .label{margin:0 15px 0 7px; position:relative; top:1px;}
+.form_board td.radio .label2{margin:0 4px 0 4px; position:relative; top:1px;}
+.form_board td.radio2 p{float:left; width:100px; }
+.form_board td .inputbox1{border:1px solid #ccc; width:136px; height:20px;}
+.form_board td .inputbox2{border:1px solid #ccc; width:61px; height:20px;}
+.form_board td .inputbox3{border:1px solid #ccc; width:24px; height:20px;}
+.form_board td .inputbox4{border:1px solid #ccc; width:491px; height:20px; margin-top:3px;}
+.form_board td .inputbox5{border:1px solid #ccc; width:110px; height:20px; margin-top:3px;}
+.form_board td .inputbox6{border:1px solid #ccc; width:42px; height:20px; margin-top:3px;}
+.form_board td .inputbox7{border:1px solid #ccc; width:152px; height:20px; margin-top:3px;}
+.form_board td .inputbox8{border:1px solid #ccc; width:90px; height:20px; margin-top:3px;}
+.form_board td .inputbox9{border:1px solid #ccc; width:510px; height:20px; margin-top:3px;}
+.form_board td .select1{width:60px; height:20px;}
+.form_board td .select2{width:130px; height:20px;}
+.form_board td img{vertical-align:middle;}
+.form_board td .textarea{width:500px; height:95px; border:1px solid #ccc; padding:5px; font-size:1em;}
+.form_board .padr33{padding-left:33px; }
+.form_board .mar18{margin-right:18px; }
+.form_board .mal33{margin-left:33px; }
+.form_board .left{text-align:left; padding-left:11px;}
+
+/* table_basic */
+.table_basic{ width:100%; border-left:1px solid #e3e3e3;}
+.table_basic.bort{ width:100%; border-top:2px solid #8ccd4a;}
+.table_basic th{padding:6px 0 6px 0; background:#f4f4f4; border-bottom:1px solid #e3e3e3; border-right:1px solid #e3e3e3;  text-align:center; font-weight:normal;}
+.table_basic td{border-right:1px solid #e3e3e3; padding:6px 0 6px 6px;  border-bottom:1px solid #e3e3e3;}
+.table_basic td.radio .radio_box{width:14px ; height:14px;}
+.table_basic td.radio .label{margin:0 4px 0 4px; position:relative; top:1px;}
+.table_basic td .inputbox1{border:1px solid #ccc; width:42px; height:20px; margin-top:3px;}
+.table_basic td .inputbox2{border:1px solid #ccc; width:76px; height:20px; margin-top:3px;}
+.table_basic td .inputbox3{border:1px solid #ccc; width:110px; height:20px; margin-top:3px;}
+.table_basic td .inputbox4{border:1px solid #ccc; width:90px; height:20px; margin-top:3px;}
+.table_basic td .inputbox5{border:1px solid #ccc; width:22px; height:20px; margin-top:3px;}
+.table_basic td .inputbox6{border:1px solid #ccc; width:32px; height:20px; margin-top:3px;}
+.table_basic .center{text-align:center; padding-left:0;}
+.table_basic .brn{border-right:0;}
+.table_basic .line_top{border-top:1px solid #e3e3e3;}
+.table_basic .board_title{margin-bottom:5px; display:block; line-height:normal;}
+.table_basic ul.list li{background:url(/images/common/bl_gray_dot.gif) no-repeat left 6px; padding-left:9px; line-height:17px; margin-bottom:3px;}
+
+/* 장학금 지원실적 */
+.scholarship_result{background:url(/images/ssb/bg_result.gif) no-repeat left top; width:645px; height:523px;}
+.scholarship_result_bottom{background:url(/images/ssb/bg_result_bottom.gif) no-repeat right bottom; padding-bottom:20px; width:645px; padding-top:78px;}
+.scholarship_result_top{background:url(/images/ssb/bg_result_top.gif) repeat-y right top;  }
+.scholarship_result ul{text-align:right; padding-top:25px; }
+.scholarship_result ul.pad{padding:55px 0 45px 0;}
+.scholarship_result_text{text-align:right; margin:7px 13px 0 0;}
+
+/* popup */
+.popup{background:none; padding:19px;}
+.popup_title{ background:url(/images/ssb/bg_nav.gif) repeat-x left 27px; overflow:hidden; height:30px;}
+.popup_title h1{float:left; font-size:0;}
+.popup_title ul{ text-align:right; background:none !important; float:right;}
+.popup_title ul li{display:inline; margin-left:2px;}
+.popup_content{padding:20px 0 0 5px;}
+
+/* 신청서팝업 */
+.mypage_popup{border-top:none;}
+.mypage_popup_form_box{width:580px; position:relative; padding:0 10px 18px 10px;}
+.mypage_popup_form_box h1{font-size:1em; position:absolute; left:13px; top:40px;}
+.mypage_popup_form_box .h2_mypage_popup_form{text-align:center; font-size:1em; padding:25px 0 18px 0; border-bottom:1px solid #ccc;}
+.mypage_popup_form_box ul{overflow:hidden; position:absolute; left:426px; top:26px;}
+.mypage_popup_form_box ul li{float:left; display:inline; margin-left:10px;}
+.mypage_popup_form_list{padding:0 2px;}

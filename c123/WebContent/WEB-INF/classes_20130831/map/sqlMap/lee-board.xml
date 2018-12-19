@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.board">
+
+	<typeAlias alias="Board" type="lee.bean.Board"/>
+	<typeAlias alias="BoardFile" type="lee.bean.BoardFile"/>
+	<typeAlias alias="BoardComment" type="lee.bean.BoardComment"/>
+
+
+	<!--  Board  -->
+	<!--  게시물 총 갯수  -->
+	<select id="getBoardListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	COUNT(*)
+		FROM	tb_board
+		WHERE 	bd_id = #bdId#
+		<isNotEmpty prepend="AND" property="showYn">
+			show_yn = #showYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="noticeYn">
+			notice_yn = #noticeYn#
+		</isNotEmpty>
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="title">
+				title like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="content">
+				content like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="linksrc">
+				link_src like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+   		<isNotEmpty prepend="AND" property="searchCate">
+			cate = #searchCate#
+		</isNotEmpty>
+   		<isGreaterThan prepend="AND" property="sType" compareValue="0">
+   			hr_std_type = #sType#
+   		</isGreaterThan>
+   		<isNotEmpty property="hTypeList" prepend="AND">
+   			<iterate property="hTypeList"  open="(" conjunction="OR" close=")">
+   				FIND_IN_SET(#hTypeList[]# ,hr_env) > 0
+   			</iterate>
+   		</isNotEmpty>
+	</select>
+
+	<!--  검색 리스트  총 갯수  -->
+	<select id="getSearchBoardListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT	COUNT(*)
+		FROM	tb_board
+		WHERE 	show_yn = #showYn#
+			AND bd_id NOT IN (2004,6002)
+			<isNotEmpty prepend="AND" property="searchValue">
+				( title like CONCAT('%',#searchValue#,'%') OR content like CONCAT('%',#searchValue#,'%') )
+			</isNotEmpty>
+			<isEmpty prepend="AND" property="searchValue">
+				1 = 2
+			</isEmpty>
+	</select>
+
+	<!-- 마지막 등록된 글 가져옴. -->
+	<select id="getBoardMaxId" resultClass="Integer">
+		SELECT IFNULL(max(cont_id), 0)
+		FROM tb_board
+	</select>
+
+	<!-- 입력한 level 값보다 큰 level을 모두 업데이트  -->
+	<update id="updateBoardPlusLevel" parameterClass="Board">
+		UPDATE tb_board
+		SET level = level + 1
+		WHERE ref = #ref#
+		  AND level >= #level#
+	</update>
+
+	<!-- 입력한 level 값보다 작은 level을 모두 업데이트  -->
+	<update id="updateBoardMinusLevel" parameterClass="Board">
+		UPDATE tb_board
+		SET level = level - 1
+		WHERE ref = #ref#
+		  AND level > #level#
+	</update>
+
+	<!--  게시물 목록  -->
+	<select id="getBoardList" resultClass="Board" parameterClass="Map">
+		SELECT	A.cont_id as contId
+				,bd_id as bdId
+				,ref
+				,step
+				,level
+				,cate
+				,title
+				,content
+				,notice_yn as noticeYn
+				,show_yn as showYn
+				,hit_cnt as hitCnt
+				,link_src as linkSrc
+				,link_url as linkUrl
+				,ans_text as ansText
+				,ans_id as ansId
+				,ans_name as ansName
+				,ans_date as ansDate
+				,ans_yn as ansYn
+				,hr_std_type as hrStdType
+				,hr_grade as hrGrade
+				,hr_subject as hrSubject
+				,hr_env as hrEnv
+				,evt_sdate as evtSdate
+				,evt_edate as evtEdate
+				,evt_result_url as evtResultUrl
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+				,mod_id as modId
+				,mod_date as modDate
+				,1 as boardFileCnt
+				,0 as boardCommentCnt
+  				,CASE WHEN reg_date <![CDATA[>=]]> DATE_SUB(CURDATE(), INTERVAL 1 DAY) THEN 'Y' ELSE 'N' END as newYn
+		FROM 	tb_board A
+		WHERE 	bd_id = #bdId#
+		<isNotEmpty prepend="AND" property="showYn">
+			show_yn = #showYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="noticeYn">
+			notice_yn = #noticeYn#
+		</isNotEmpty>
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="all">
+				(title like CONCAT('%',#searchValue#,'%') OR content like CONCAT('%',#searchValue#,'%'))
+			</isEqual>
+			<isEqual prepend="AND" property="searchType" compareValue="title">
+				title like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="content">
+				content like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="linksrc">
+				link_src like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+   		<isNotEmpty prepend="AND" property="searchCate">
+			cate = #searchCate#
+		</isNotEmpty>
+   		<isGreaterThan prepend="AND" property="sType" compareValue="0">
+   			hr_std_type = #sType#
+   		</isGreaterThan>
+   		<isNotEmpty property="hTypeList" prepend="AND">
+   			<iterate property="hTypeList"  open="(" conjunction="OR" close=")">
+   				FIND_IN_SET(#hTypeList[]# ,hr_env) > 0
+   			</iterate>
+   		</isNotEmpty>
+   		ORDER BY ref DESC, level ASC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  게시물 목록  -->
+	<select id="getBoardImgList" resultClass="Board" parameterClass="Map">
+		SELECT	A.cont_id as contId
+				,A.bd_id as bdId
+				,A.ref
+				,A.step
+				,A.level
+				,A.title
+				,A.content
+				,A.hit_cnt as hitCnt
+				,A.reg_id as regId
+				,A.reg_name as regName
+				,A.reg_date as regDate
+				,B.rname as thumnailRname
+				,B.cname as thumnailCname
+		FROM 	tb_board A
+			LEFT JOIN tb_board_file B on A.cont_id = B.cont_id AND file_type = '3'
+		WHERE 	A.bd_id = #bdId#
+		<isNotEmpty prepend="AND" property="showYn">
+			A.show_yn = #showYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="noticeYn">
+			A.notice_yn = #noticeYn#
+		</isNotEmpty>
+		<isNotEmpty property="searchValue">
+			<isEqual prepend="AND" property="searchType" compareValue="title">
+				A.title like CONCAT('%',#searchValue#,'%')
+			</isEqual>
+	  		<isEqual prepend="AND" property="searchType" compareValue="content">
+				A.content like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+	   		<isEqual prepend="AND" property="searchType" compareValue="linksrc">
+				A.link_src like CONCAT('%',#searchValue#,'%')
+	   		</isEqual>
+   		</isNotEmpty>
+   		ORDER BY A.ref DESC, A.level ASC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  검색 리스트  -->
+	<select id="getSearchBoardList" resultClass="Board" parameterClass="Map">
+		SELECT	cont_id as contId
+				,bd_id as bdId
+				,ref
+				,step
+				,level
+				,cate
+				,title
+				,content
+				,notice_yn as noticeYn
+				,show_yn as showYn
+				,hit_cnt as hitCnt
+				,link_src as linkSrc
+				,link_url as linkUrl
+				,ans_text as ansText
+				,ans_id as ansId
+				,ans_name as ansName
+				,ans_date as ansDate
+				,ans_yn as ansYn
+				,hr_std_type as hrStdType
+				,hr_grade as hrGrade
+				,hr_subject as hrSubject
+				,hr_env as hrEnv
+				,evt_sdate as evtSdate
+				,evt_edate as evtEdate
+				,evt_result_url as evtResultUrl
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+				,mod_id as modId
+				,mod_date as modDate
+		FROM 	tb_board A
+		WHERE 	show_yn = #showYn#
+			AND bd_id NOT IN (2004, 6002)
+			<isNotEmpty prepend="AND" property="searchValue">
+				( title like CONCAT('%',#searchValue#,'%') OR content like CONCAT('%',#searchValue#,'%') )
+			</isNotEmpty>
+			<isEmpty prepend="AND" property="searchValue">
+				1 = 2
+			</isEmpty>
+   		ORDER BY ref DESC, level ASC
+   		LIMIT #pageNum#, #listSize#
+	</select>
+
+	<!--  게시물 상세보기  -->
+	<select id="getBoard" resultClass="Board" parameterClass="Map">
+		SELECT	cont_id as contId
+				,bd_id as bdId
+				,ref
+				,step
+				,level
+				,cate
+				,title
+				,content
+				,notice_yn as noticeYn
+				,show_yn as showYn
+				,hit_cnt as hitCnt
+				,link_src as linkSrc
+				,link_url as linkUrl
+				,ans_text as ansText
+				,ans_id as ansId
+				,ans_name as ansName
+				,ans_date as ansDate
+				,ans_yn as ansYn
+				,hr_std_type as hrStdType
+				,hr_grade as hrGrade
+				,hr_subject as hrSubject
+				,hr_env as hrEnv
+				,evt_sdate as evtSdate
+				,evt_edate as evtEdate
+				,evt_result_url as evtResultUrl
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+				,mod_id as modId
+				,mod_date as modDate
+				,1 as boardFileCnt
+  				,0 as boardCommentCnt
+		FROM 	tb_board A
+		WHERE	cont_id = #contId#
+	</select>
+
+	<!--  이전글  -->
+	<select id="getPrevBoard" resultClass="Board" parameterClass="Map">
+		SELECT A.cont_id as contId, A.title, A.ref, A.step, A.level
+		FROM(
+				SELECT	cont_id
+						,title
+						,ref
+			            ,step
+			            ,level
+				FROM 	tb_board
+				WHERE 	bd_id = #bdId#
+				<isNotEmpty prepend="AND" property="showYn">
+					show_yn = #showYn#
+				</isNotEmpty>
+				<isNotEmpty prepend="AND" property="noticeYn">
+					notice_yn = #noticeYn#
+				</isNotEmpty>
+				<isNotEmpty property="searchValue">
+					<isEqual prepend="AND" property="searchType" compareValue="title">
+						title like CONCAT('%',#searchValue#,'%')
+					</isEqual>
+			  		<isEqual prepend="AND" property="searchType" compareValue="content">
+						content like CONCAT('%',#searchValue#,'%')
+			   		</isEqual>
+		   		</isNotEmpty>
+		   		<isNotEmpty prepend="AND" property="searchCate">
+					cate = #searchCate#
+				</isNotEmpty>
+		   		<isGreaterThan prepend="AND" property="sType" compareValue="0">
+		   			hr_std_type = #sType#
+		   		</isGreaterThan>
+		   		<isNotEmpty property="hTypeList" prepend="AND">
+		   			<iterate property="hTypeList"  open="(" conjunction="OR" close=")">
+		   				FIND_IN_SET(#hTypeList[]# ,hr_env) > 0
+		   			</iterate>
+		   		</isNotEmpty>
+	   		) A ,
+	   		(SELECT ref, step, level FROM tb_board WHERE cont_id = #contId#) B
+	   	WHERE	A.ref <![CDATA[<]]> B.ref
+	   	   OR	(A.ref = B.ref AND A.step <![CDATA[>=]]> B.step AND A.level <![CDATA[>]]> B.level)
+   		ORDER BY ref DESC, level ASC
+   		LIMIT 1
+	</select>
+
+	<!--  다음글  -->
+	<select id="getNextBoard" resultClass="Board" parameterClass="Map">
+		SELECT A.cont_id as contId, A.title, A.ref, A.step, A.level
+		FROM(
+				SELECT	cont_id
+						,title
+						,ref
+			            ,step
+			            ,level
+				FROM 	tb_board
+				WHERE 	bd_id = #bdId#
+				<isNotEmpty prepend="AND" property="showYn">
+					show_yn = #showYn#
+				</isNotEmpty>
+				<isNotEmpty prepend="AND" property="noticeYn">
+					notice_yn = #noticeYn#
+				</isNotEmpty>
+				<isNotEmpty property="searchValue">
+					<isEqual prepend="AND" property="searchType" compareValue="title">
+						title like CONCAT('%',#searchValue#,'%')
+					</isEqual>
+			  		<isEqual prepend="AND" property="searchType" compareValue="content">
+						content like CONCAT('%',#searchValue#,'%')
+			   		</isEqual>
+		   		</isNotEmpty>
+		   		<isNotEmpty prepend="AND" property="searchCate">
+					cate = #searchCate#
+				</isNotEmpty>
+		   		<isGreaterThan prepend="AND" property="sType" compareValue="0">
+		   			hr_std_type = #sType#
+		   		</isGreaterThan>
+		   		<isNotEmpty property="hTypeList" prepend="AND">
+		   			<iterate property="hTypeList"  open="(" conjunction="OR" close=")">
+		   				FIND_IN_SET(#hTypeList[]# ,hr_env) > 0
+		   			</iterate>
+		   		</isNotEmpty>
+	   		) A ,
+	   		(SELECT ref, step, level FROM tb_board WHERE cont_id = #contId#) B
+	   	WHERE	A.ref <![CDATA[>]]> B.ref
+	   	   OR	(A.ref = B.ref AND A.step <![CDATA[<=]]> B.step AND A.level <![CDATA[<]]> B.level)
+   		ORDER BY ref ASC, level DESC
+   		LIMIT 1
+	</select>
+
+	<!-- 저장하기  -->
+	<insert id="insertBoard" parameterClass="Board">
+		INSERT INTO tb_board(
+			cont_id
+			,bd_id
+			,ref
+			,step
+			,level
+			,cate
+			,title
+			,content
+			,notice_yn
+			,show_yn
+			,hit_cnt
+			,link_src
+			,link_url
+			,ans_text
+			,ans_id
+			,ans_name
+			,ans_date
+			,ans_yn
+			,hr_std_type
+			,hr_grade
+			,hr_subject
+			,hr_env
+			,evt_sdate
+			,evt_edate
+			,evt_result_url
+			,reg_id
+			,reg_name
+			,reg_date
+		)
+		VALUES(
+			#contId#
+			,#bdId#
+			,#ref#
+			,#step#
+			,#level#
+			,#cate#
+			,#title#
+			,#content#
+			,#noticeYn#
+			,#showYn#
+			,#hitCnt#
+			,#linkSrc#
+			,#linkUrl#
+			,#ansText#
+			,#ansId#
+			,#ansName#
+			,CURDATE()
+			,#ansYn#
+			,#hrStdType#
+			,#hrGrade#
+			,#hrSubject#
+			,#hrEnv#
+			,#evtSdate#
+			,#evtEdate#
+			,#evtResultUrl#
+			,#regId#
+			,#regName#
+			,CURDATE()
+		)
+		<selectKey resultClass="int">
+	    	SELECT  LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<!-- 수정하기  -->
+	<update id="updateBoard" parameterClass="Board">
+		UPDATE tb_board
+		SET mod_date = CURDATE()
+		    ,mod_id = #modId#
+		<isNotEmpty prepend="," property="ref">
+			ref = #ref#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="step">
+			step = #step#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="level">
+			level = #level#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="cate">
+			cate = #cate#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="title">
+			title = #title#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="content">
+			content = #content#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="noticeYn">
+			notice_yn = #noticeYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="showYn">
+			show_yn = #showYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="linkSrc">
+			link_src = #linkSrc#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="linkUrl">
+			link_url = #linkUrl#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansText">
+			ans_text = #ansText#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansId">
+			ans_id = #ansId#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansName">
+			ans_name = #ansName#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansDate">
+			ans_date = #ansDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansYn">
+			ans_yn = #ansYn#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="hrStdType">
+			hr_std_type = #hrStdType#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="hrGrade">
+			hr_grade = #hrGrade#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="hrSubject">
+			hr_subject = #hrSubject#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="hrEnv">
+			hr_env = #hrEnv#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="evtSdate">
+			evt_sdate = #evtSdate#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="evtEdate">
+			evt_edate = #evtEdate#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="evtResultUrl">
+			evt_result_url = #evtResultUrl#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="regId">
+			reg_id = #regId#
+		</isNotEmpty>
+		WHERE cont_id = #contId#
+	</update>
+
+	<!-- 조회수 증가  -->
+	<update id="updateBoardViewCnt" parameterClass="Map">
+		UPDATE tb_board
+		   SET hit_cnt = hit_cnt + 1
+		WHERE  cont_id = #contId#
+	</update>
+
+	<!-- 삭제하기 -->
+	<delete id="deleteBoard" parameterClass="Integer">
+		DELETE
+		FROM tb_board
+		WHERE cont_id = #contId#
+	</delete>
+
+
+	<!--  BoardFile  -->
+	<!--  목록  -->
+	<select id="getBoardFileList" resultClass="BoardFile" parameterClass="Integer">
+		SELECT	bfile_id as bfileId
+				,cont_id as contId
+				,file_type as fileType
+				,rname
+				,cname
+				,reg_date as regDate
+				,descript
+		FROM 	tb_board_file
+		WHERE 	cont_id = #contId#
+		ORDER BY bfileId ASC
+	</select>
+
+	<!-- 등록하기 -->
+	<insert id="insertBoardFile" parameterClass="BoardFile">
+		INSERT INTO tb_board_file(
+				cont_id
+				,file_type
+				,rname
+				,cname
+				,reg_date
+				<isNotEmpty property="descript">
+					,descript
+				</isNotEmpty>
+		)
+		VALUES (
+				#contId#
+				,#fileType#
+				,#rname#
+				,#cname#
+				,CURDATE()
+				<isNotEmpty property="descript">
+					,#descript#
+				</isNotEmpty>
+		)
+	</insert>
+
+	<!-- 수정하기 -->
+	<update id="updateBoardFile" parameterClass="BoardFile">
+		UPDATE tb_board_file
+		SET	file_type = #fileType#
+			,rname = #rname#
+			,cname = #cname#
+		<isNotEmpty prepend="," property="descript">
+			descript = #descript#
+		</isNotEmpty>
+		WHERE bfile_id = #bfileId#
+	</update>
+
+	<!-- 수정하기 포토,활동 게시판 설명 수정 -->
+	<update id="updateBoardFileDescript" parameterClass="BoardFile">
+		UPDATE tb_board_file
+		SET	descript = #descript#
+		WHERE bfile_id = #bfileId#
+	</update>
+
+	<!-- 삭제하기 -->
+	<delete id="deleteBoardFile" parameterClass="Integer">
+		DELETE
+		FROM tb_board_file
+		WHERE bfile_id = #bfileId#
+	</delete>
+
+
+	<!--  BoardComment  -->
+	<!--  목록  -->
+	<select id="getBoardCommentList" resultClass="BoardComment" parameterClass="Integer">
+		SELECT	bcmt_id as bcmtId
+				,cont_id as contId
+				,cmt
+				,reg_id as regId
+				,reg_name as regName
+				,reg_date as regDate
+		FROM 	tb_board_comment
+		WHERE 	cont_id = #contId#
+	</select>
+
+	<!-- 등록하기 -->
+	<insert id="insertBoardComment" parameterClass="BoardComment">
+		INSERT INTO tb_board_comment(
+				cont_id
+				,cmt
+				,reg_id
+				,reg_name
+				,reg_date
+		)
+		VALUES (
+				#contId#
+				,#cmt#
+				,#regId#
+				,#regName#
+				,CURDATE()
+		)
+	</insert>
+
+	<!-- 수정하기 -->
+	<update id="updateBoardComment" parameterClass="BoardComment">
+		UPDATE tb_board_comment
+		SET	cmt = #cmt#
+			,reg_id = #regId#
+			,reg_name = #regName#
+			,reg_date = CURDATE()
+		WHERE bcmt_id = #bcmtId#
+	</update>
+
+	<!-- 삭제하기 -->
+	<delete id="deleteBoardComment" parameterClass="Integer">
+		DELETE
+		FROM tb_board_comment
+		WHERE bcmt_id = #bcmtId#
+	</delete>
+
+	<select id="newTotalCount" resultClass="Integer">
+		SELECT COUNT(*)
+		FROM tb_board
+		WHERE reg_date <![CDATA[>=]]> DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+	</select>
+
+</sqlMap>

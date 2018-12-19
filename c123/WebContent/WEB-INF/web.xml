@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <filter>
+      <filter-name>Parameter Check</filter-name>
+      <filter-class>lee.common.servlet.ParameterFilter</filter-class>
+  </filter>
+
+  <filter>
+      <filter-name>Set Character Encoding</filter-name>
+      <filter-class>lee.common.servlet.SetCharacterEncodingFilter</filter-class>
+      <init-param>
+          <param-name>encoding</param-name>
+          <param-value>UTF-8</param-value>
+      </init-param>
+  </filter>
+
+  <filter-mapping>
+      <filter-name>Parameter Check</filter-name>
+      <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+      <filter-name>Set Character Encoding</filter-name>
+      <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+      <filter-name>Set Character Encoding</filter-name>
+      <url-pattern>*.dn</url-pattern>
+  </filter-mapping>
+
+  <servlet>
+      <servlet-name>Download</servlet-name>
+      <servlet-class>lee.common.servlet.DownloadStream</servlet-class>
+      <!--init-param>
+      </init-param-->
+      <load-on-startup>1</load-on-startup>
+  </servlet>
+
+   <servlet>
+    <servlet-name>rcservlet</servlet-name>
+    <servlet-class>reportservlets.rc.RCServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>rcservletsm</servlet-name>
+    <servlet-class>reportservlets.rc.RCServletSM</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>rcdocparseservlet</servlet-name>
+    <servlet-class>reportservlets.applet.RCDocParseServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>rcdocparseservletsm</servlet-name>
+    <servlet-class>reportservlets.sm.RCDocParseServletSM</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>rcappletgenservlet</servlet-name>
+    <servlet-class>reportservlets.applet.RCAppletGenServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>fileservlet</servlet-name>
+    <servlet-class>reportservlets.file.FileServlet</servlet-class>
+  </servlet>
+
+
+  <servlet-mapping>
+      <servlet-name>Download</servlet-name>
+      <url-pattern>/servlet/board.dn</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>Download2</servlet-name>
+      <servlet-class>lee.common.servlet.DownloadStream</servlet-class>
+      <!--init-param>
+      </init-param-->
+      <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>Download2</servlet-name>
+      <url-pattern>/servlet/product.dn</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>Download3</servlet-name>
+      <servlet-class>lee.common.servlet.DownloadStream</servlet-class>
+      <!--init-param>
+      </init-param-->
+      <load-on-startup>3</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>Download3</servlet-name>
+      <url-pattern>/servlet/scholar.dn</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+      <servlet-name>Download4</servlet-name>
+      <servlet-class>lee.common.servlet.DownloadStream</servlet-class>
+      <!--init-param>
+      </init-param-->
+      <load-on-startup>4</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+      <servlet-name>Download4</servlet-name>
+      <url-pattern>/servlet/doc.dn</url-pattern>
+  </servlet-mapping>
+
+
+
+    <!-- FileDownLoadServlet -->
+     <servlet>
+        <servlet-name>ExcelDownLoadServlet</servlet-name>
+        <servlet-class>lee.common.servlet.ExcelDownLoadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ExcelDownLoadServlet</servlet-name>
+        <url-pattern>/servlet/ExcelDownLoadServlet</url-pattern>
+    </servlet-mapping>
+
+
+</web-app>

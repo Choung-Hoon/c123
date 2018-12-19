@@ -1,0 +1,48 @@
+@charset "euc-kr";
+
+/* @font-face {font-family:wooriDotum; src:url(/tour/share/font/wooriDotum.eot);} */
+/* @font-face {font-family:wooriDotum90C1; src:url(/tour/share/font/wooriDotum90C1.eot);} */
+/* @font-face {font-family:wooriDotum90C2; src:url(/tour/share/font/wooriDotum90C2.eot);} */
+/* @font-face {font-family:wooriSinmoon; src:url(/tour/share/font/wooriSinmoon.eot);} */
+/* @font-face {font-family:wooriSaebom; src:url(/share/font/wooriSaebom.eot);} */
+/* @font-face {font-family:wooriSoyoung; src:url(/tour/share/font/wooriSoyoung.eot);} */
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, p, button{margin:0;padding:0;}
+
+body{font-size:0.75em;font-family:dotum; color:#666; line-height:1.5em;}
+body.contents{font-size:0.75em;font-family:wooriSaebom,dotum,sans-serif; color:#666;line-height:1.5em;}
+body.popup{background:none;}
+body.photo_gallery{background:#1b1d22; color:#fff; height:100%;}
+
+legend{visibility:hidden;width:0;height:0;overflow:hidden;position:absolute;top:-10000px;line-height:0;}
+hr{display:none;}
+
+table{border-spacing:0; *border-collapse: collapse;padding:0; margin:0;}
+th, td{padding:0; margin:0;font-size:1em;}
+
+img, fieldset, input.image{border:0 none;}
+ul, ol, li{list-style:none;}
+
+input, select, button, textarea{vertical-align:middle;font-family:inherit;color:#5e5e5e;}
+img{vertical-align:top;}
+
+address, em{font-style:normal;}
+
+input, input.type-text{padding:0;font-size:1em;}
+
+.hidden{visibility:hidden;width:0;height:0;overflow:hidden;position:absolute;top:-10000px;line-height:0;}
+
+a{color:#5e5e5e;text-decoration:none;}
+a:link{color:#5e5e5e;}
+a:visited{color:#5e5e5e;}
+a:hover{color:#5e5e5e;}
+
+/* gis 스크롤바삭제 */
+#map_zoom_slider{display:none;}
+#map_navdiv{display:none;}
+
+/* .contents{word-break:keep-all;} */
+p, li{word-break:keep-all;}
+
+button{vertical-align:top;border:0;background:transparent;cursor:pointer; *overflow:visible;}
+button span{visibility:hidden;width:0;height:0;overflow:hidden;position:absolute;top:-10000px;line-height:0;}

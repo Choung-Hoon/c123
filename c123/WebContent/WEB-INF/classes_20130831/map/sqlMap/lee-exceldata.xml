@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.exceldata">
+
+	<typeAlias alias="ExcelData" type="lee.bean.ExcelData"/>
+	<typeAlias alias="ExcelDataJRS" type="lee.common.db.JResultSet"/>
+
+	<!-- EXCEL DATA INSERT -->
+	<insert id="insertExcelData" parameterClass="ExcelData">
+		INSERT INTO tb_excel_data (
+		  	load_id
+		  	,f1 
+			,f2 
+			,f3 
+			,f4 
+			,f5 
+			,f6 
+			,f7 
+			,f8 
+			,f9 
+			,f10
+			,f11
+			,f12
+			,f13
+			,f14
+			,f15
+			,f16
+			,f17
+			,f18
+			,f19
+			,reg_id
+			,reg_date
+		  )
+		VALUES (
+		  #loadId#
+		  ,#f1#  
+		  ,#f2#        
+		  ,#f3#        
+		  ,#f4#        
+		  ,#f5#        
+		  ,#f6#        
+		  ,#f7#        
+		  ,#f8#        
+		  ,#f9#        
+		  ,#f10#       
+		  ,#f11#       
+		  ,#f12#       
+		  ,#f13#       
+		  ,#f14#       
+		  ,#f15#       
+		  ,#f16#       
+		  ,#f17# 
+		  ,#f18# 
+		  ,#f19# 
+		  ,regId
+		  ,regDate
+	  )
+	</insert>
+
+	<update id="deleteExcelDataByloadId" parameterClass="Map">
+	<![CDATA[
+		DELETE FROM tb_excel_data
+		WHERE load_id IN ( '$loadId$' )
+	]]>
+	</update>
+	
+	<!-- 업종/3년 합계/양도가 추출 쿼리-->
+	<select id="getExcelDataByField" resultClass="ExcelData" parameterClass="Map">
+	-- 업종 쿼리 
+	<![CDATA[
+		SELECT DISTINCT REPLACE($fieldName$,'<br>','/') AS $fieldName$
+	]]>		
+		FROM tb_excel_data
+		WHERE 1 = 1
+		/* 업종 */
+	 <isNotEmpty property="f2List">
+		 AND f15 IN ($f2List$) 
+     </isNotEmpty>	 	 
+		 /* 3년 합계*/
+	 <isNotEmpty property="f13List">
+		 AND f13 IN ($f13List$) 
+     </isNotEmpty>	 
+     	/* 양도가 */
+	 <isNotEmpty property="f15List">
+		 AND f15 IN ($f15List$) 
+     </isNotEmpty>
+		ORDER BY $fieldName$ DESC
+	</select>
+	
+	<!-- 업종 추출 쿼리-->
+	<select id="getExcelDataByF2" resultClass="ExcelData" parameterClass="Map">
+		-- 업종 쿼리 
+	<![CDATA[
+ 	 	SELECT DISTINCT REPLACE(f2,'<br>','/') AS f2
+ 	]]>		
+		FROM tb_excel_data
+		WHERE 1 = 1
+		 /* 양도가 쿼리 */
+	 <isNotEmpty property="f15List">
+		 AND f15 IN ($f15List$) 
+     </isNotEmpty>
+		 /* 3년 합계 쿼리*/
+	 <isNotEmpty property="f13List">
+		 AND f13 IN ($f13List$) 
+     </isNotEmpty>	 
+		ORDER BY f2 DESC
+	</select>
+	
+	<!-- 3년 합계 추출 쿼리-->
+	<select id="getExcelDataByF13" resultClass="ExcelData" parameterClass="Map">
+		-- 양도가 쿼리 
+	<![CDATA[
+ 	 	SELECT DISTINCT REPLACE(f13,'<br>','/') AS f13
+ 	]]>	
+		FROM tb_excel_data
+		WHERE 1 = 1
+		 /* 업종 쿼리 */
+	 <isNotEmpty property="f2List">
+		 AND f2 IN ($f2List$) 
+     </isNotEmpty>
+		 /* 양도가 쿼리 */
+	 <isNotEmpty property="f15List">
+		 AND f15 IN ($f15List$) 
+     </isNotEmpty>
+		ORDER BY f13 DESC
+	</select>
+	
+	<!-- 양도가 추출 쿼리-->
+	<select id="getExcelDataByF15" resultClass="ExcelData" parameterClass="Map">
+		-- 양도가 쿼리 
+	<![CDATA[
+ 	 	SELECT DISTINCT REPLACE(f15,'<br>','/') AS f15
+ 	]]>
+		FROM tb_excel_data
+		WHERE 1 = 1
+		 /* 양도가 쿼리 */
+	 <isNotEmpty property="f2List">
+		 AND f2 IN ($f2List$) 
+     </isNotEmpty>
+		 /* 3년 합계 쿼리 */
+	 <isNotEmpty property="f3List">
+		 AND f13 IN ($f13List$) 
+     </isNotEmpty>	 
+		ORDER BY f15 DESC
+	</select>
+		
+    <!-- 로드된 전체 엑셀 데이터 추출 -->
+	<select id="getAllExcelData" resultClass="ExcelData" parameterClass="Map">
+		SELECT 
+			 excel_id AS excelId
+			,load_id  AS loadId
+		  	,f1 
+			,f2 
+			,f3 
+			,f4 
+			,f5 
+			,f6 
+			,f7 
+			,f8 
+			,f9 
+			,f10
+			,f11
+			,f12
+			,f13
+			,f14
+			,f15
+			,f16
+			,f17
+			,f18
+			,f19
+			,reg_id		AS regId
+			,reg_date	AS regDate
+		 FROM tb_excel_data
+		 WHERE 1=1
+		    /* 업종 */
+		 <isNotEmpty property="f2List">
+			 AND f15 IN ($f2List$) 
+	     </isNotEmpty>	 	 
+			 /* 3년 합계*/
+		 <isNotEmpty property="f13List">
+			 AND f13 IN ($f13List$) 
+	     </isNotEmpty>	 
+	     	/* 양도가 */
+		 <isNotEmpty property="f15List">
+			 AND f15 IN ($f15List$) 
+	     </isNotEmpty>
+  	  ORDER BY f15 DESC, f13 DESC, f15 DESC
+  	  LIMIT 1,10
+    </select>
+    
+    <!-- 로드된 전체 엑셀 데이터 추출 -->
+	<select id="getAllExcelDataByJResult" resultClass="ExcelDataJRS" parameterClass="Map">
+		SELECT 
+			 excel_id AS excelId
+			,load_id  AS loadId
+		  	,f1 
+			,f2 
+			,f3 
+			,f4 
+			,f5 
+			,f6 
+			,f7 
+			,f8 
+			,f9 
+			,f10
+			,f11
+			,f12
+			,f13
+			,f14
+			,f15
+			,f16
+			,f17
+			,f18
+			,f19
+			,reg_id		AS regId
+			,reg_date	AS regDate
+		 FROM tb_excel_data
+		 WHERE 1=1
+		    /* 업종 */
+		 <isNotEmpty property="f2List">
+			 AND f15 IN ($f2List$) 
+	     </isNotEmpty>	 	 
+			 /* 3년 합계*/
+		 <isNotEmpty property="f13List">
+			 AND f13 IN ($f13List$) 
+	     </isNotEmpty>	 
+	     	/* 양도가 */
+		 <isNotEmpty property="f15List">
+			 AND f15 IN ($f15List$) 
+	     </isNotEmpty>
+  	  ORDER BY f15 DESC, f13 DESC, f15 DESC
+  	  LIMIT 1,100
+    </select>
+    
+    <select id="getExcelDataByExcelId" resultClass="ExcelData" parameterClass="Map">
+		SELECT 
+			 excel_id AS excelId
+			,load_id  AS loadId
+		  	,f1 
+			,f2 
+			,f3 
+			,f4 
+			,f5 
+			,f6 
+			,f7 
+			,f8 
+			,f9 
+			,f10
+			,f11
+			,f12
+			,f13
+			,f14
+			,f15
+			,f16
+			,f17
+			,f18
+			,f19
+			,reg_id		AS regId
+			,reg_date	AS regDate
+		 FROM tb_excel_data
+		 WHERE 1=1
+		  AND excel_id = #excelId#
+    </select>
+
+	<select id="getExcelDataListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT count(*)
+		  FROM tb_excel_data
+		 WHERE 1=1
+			/* 업종 */
+		 <isNotEmpty property="f2List">
+			 AND f15 IN ($f2List$) 
+	     </isNotEmpty>	 	 
+			 /* 3년 합계*/
+		 <isNotEmpty property="f13List">
+			 AND f13 IN ($f13List$) 
+	     </isNotEmpty>	 
+	     	/* 양도가 */
+		 <isNotEmpty property="f15List">
+			 AND f15 IN ($f15List$) 
+	     </isNotEmpty>
+   	</select>
+
+	<select id="getExcelDataList" resultClass="ExcelData" parameterClass="Map">
+		SELECT 
+			 excel_id AS excelId
+			,load_id  AS loadId
+		  	,f1 	
+			,f2 	
+			,f3     
+			,f4     
+			,f5     
+			,f6     
+			,f7     
+			,f8     
+			,f9     
+			,f10    
+			,f11    
+			,f12    
+			,f13    
+			,f14    
+			,f15    
+			,f16    
+			,f17    
+			,f18    
+			,f19    
+		    ,reg_id as regId
+	        ,DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate
+		 FROM tb_excel_data
+	    WHERE 1=1
+		    /* 업종 */
+		 <isNotEmpty property="f2List">
+			 AND f15 IN ($f2List$) 
+	     </isNotEmpty>	 	 
+			 /* 3년 합계*/
+		 <isNotEmpty property="f13List">
+			 AND f13 IN ($f13List$) 
+	     </isNotEmpty>	 
+	     	/* 양도가 */
+		 <isNotEmpty property="f15List">
+			 AND f15 IN ($f15List$) 
+	     </isNotEmpty>
+  	  ORDER BY f15 DESC, f13 DESC, f15 DESC
+	  LIMIT $pageNum$,$listSize$
+    </select>
+
+</sqlMap>

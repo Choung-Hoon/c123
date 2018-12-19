@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="lee.scholarship">
+
+	<typeAlias alias="Scholarship" type="lee.bean.Scholarship"/>
+	
+	<!-- 등록 -->
+	<insert id="insertScholarship" parameterClass="Scholarship">
+		INSERT INTO tb_scholarship (
+		  sc_type,
+		  sc_year,
+		  sc_time,
+		  acc_sdate,
+		  acc_edate,
+		  alloc_cnt,
+		  del_yn,
+		  reg_id,
+		  reg_date,
+		  mod_id,
+		  mod_date)
+		VALUES (
+		  #scType#,
+		  #scYear#,
+		  #scTime#,
+		  #accSdate#,
+		  #accEdate#,
+		  #allocCnt#,
+		  #delYn#,
+		  #regId#,
+		  NOW(),
+		  #modId#,
+		  NOW())
+	</insert>
+
+	<!--  삭제  -->
+	<update id="deleteScholarship" parameterClass="Map">
+	<![CDATA[
+	--	DELETE FROM tb_scholarship  
+	--	WHERE sc_id IN ( $scIdList$ )
+	
+		UPDATE tb_scholarship  
+		 SET del_yn = 'Y'
+		WHERE sc_id IN ( $scIdList$ )
+	]]>
+	</update>
+
+	<!-- 수정 -->
+	<update id="updateScholarship" parameterClass="Scholarship">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET sc_type = #scType#,
+		      sc_year = #scYear#,
+		  	  sc_time = #scTime#,
+		  	  acc_sdate = #accSdate#,
+		  	  acc_edate = #accEdate#,
+		  	  alloc_cnt = #allocCnt#,
+		  	  req_cnt = #reqCnt#,
+		  	  del_yn = #delYn#,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>
+
+	<!-- 접수기간 수정 -->
+	<update id="updateScholarshipWithAccDate" parameterClass="Scholarship">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET acc_sdate = #accSdate#,
+		  	  acc_edate = #accEdate#,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>
+
+
+	<!-- 신청자수 수정 -->
+	<update id="updateScholarshipReqCnt" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET req_cnt = #reqCnt#,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>
+	
+	<!-- 프론트단 : 신청 인원 플러스 -->
+	<update id="updateScholarshipReqCntPlus" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET req_cnt = req_cnt + 1,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>	
+	
+	<!-- 프론트단 : 신청 인원 차감 -->
+	<update id="updateScholarshipReqCntMinus" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET req_cnt = req_cnt - 1,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>		
+	
+	<!-- 배정인원수 수정 -->
+	<update id="updateScholarshipAllocCnt" parameterClass="Map">
+	<![CDATA[
+		UPDATE tb_scholarship
+		  SET alloc_cnt = #allocCnt#,
+		  	  mod_id = #modId#,
+		  	  mod_date = NOW()
+		WHERE sc_id = #scId#
+	]]>
+	</update>	
+
+    <!-- 상세정보 -->
+	<select id="getScholarship" resultClass="Scholarship" parameterClass="Map">
+		SELECT sc_id as scId,
+		       sc_type as scType,
+		       sc_year as scYear,
+		       sc_time as scTime,
+		       acc_sdate as accSdate,
+		       acc_edate as accEdate,
+		       alloc_cnt as allocCnt,
+		       req_cnt as reqCnt,
+		       del_yn as delYn,
+		       reg_id as regId,
+	           DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate,
+			   mod_id as modId,
+			   DATE_FORMAT(mod_date, '%Y/%m/%d') as modDate
+		 FROM tb_scholarship
+	    WHERE sc_id = #scId#
+    </select>
+
+    <!-- 상세정보 -->
+	<select id="getScholarshipForChk" resultClass="Scholarship" parameterClass="Map">
+		SELECT sc_id as scId,
+		       sc_type as scType,
+		       sc_year as scYear,
+		       sc_time as scTime,
+		       acc_sdate as accSdate,
+		       acc_edate as accEdate,
+		       alloc_cnt as allocCnt,
+		       req_cnt as reqCnt,
+		       del_yn as delYn,
+		       reg_id as regId,
+	           DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate,
+			   mod_id as modId,
+			   DATE_FORMAT(mod_date, '%Y/%m/%d') as modDate
+		 FROM tb_scholarship
+	    WHERE sc_type = #scType#
+	      AND sc_year = #scYear#
+	      AND sc_time = #scTime#
+	      AND del_yn = 'N'
+    </select>
+    
+	<!-- sc_id의 최대값 -->
+	<select id="getMaxScId" resultClass="Integer">
+		SELECT MAX(sc_id)
+		  FROM tb_scholarship
+   	</select>
+   	
+	<!-- 목록 총개수(페이징) -->
+	<select id="getScholarshipListCnt" resultClass="Integer" parameterClass="Map">
+		SELECT count(*)
+		  FROM tb_scholarship B
+		 WHERE del_yn = 'N'
+		-- 재단 관리자 : 진행/종료 
+		<isEqual property="gubun" compareValue="ing">
+	 	<![CDATA[
+	 		AND acc_sdate <= DATE_FORMAT(now(), '%Y%m%d')
+	 	 	AND acc_edate >= DATE_FORMAT(now(), '%Y%m%d')
+	 	]]>
+	 	</isEqual>
+	 	<isEqual property="gubun" compareValue="end">
+	 	<![CDATA[
+	 	 	AND acc_edate < DATE_FORMAT(now(), '%Y%m%d')
+	 	]]>
+	 	</isEqual>	 
+		-- 학교 관리자 : 장학금신청접수관리 - 장학금대상자입력관리 	 	
+	 	<isEqual property="manager" compareValue="school">
+	 		<isNotEmpty property="selfHigh">
+	 		AND sc_type in ('1','3') -- 하이서울고등학교장학금, 자립형사립고장학금
+	 		</isNotEmpty>
+	 		<isEmpty property="selfHigh">
+	 		AND sc_type in ('1') -- 하이서울고등학교장학금
+	 		</isEmpty>
+	 	</isEqual>
+	 	-- 프론트단/관리자단지정기탁금 : 장학사업 진행 여부 확인
+	 	<isNotEmpty property="scType">
+	 		AND sc_type = #scType#
+	 	</isNotEmpty>
+   	</select>
+
+    <!-- 목록 (페이징) -->
+	<select id="getScholarshipList" resultClass="Scholarship" parameterClass="Map">
+		SELECT sc_id as scId,
+		       sc_type as scType,
+		       sc_year as scYear,
+		       sc_time as scTime,
+		       acc_sdate as accSdate,
+		       acc_edate as accEdate,
+		       alloc_cnt as allocCnt,
+		       req_cnt as reqCnt,
+		       del_yn as delYn,
+		       reg_id as regId,
+	           DATE_FORMAT(reg_date, '%Y/%m/%d') as regDate,
+			   mod_id as modId,
+			   DATE_FORMAT(mod_date, '%Y/%m/%d') as modDate
+		 FROM tb_scholarship B
+	    WHERE del_yn = 'N'
+	    -- 재단 관리자 : 진행/종료
+		<isEqual property="gubun" compareValue="ing">
+	 	<![CDATA[
+	 		AND acc_sdate <= DATE_FORMAT(now(), '%Y%m%d')
+	 	 	AND acc_edate >= DATE_FORMAT(now(), '%Y%m%d')
+	 	]]>
+	 	</isEqual>
+	 	<isEqual property="gubun" compareValue="end">
+	 	<![CDATA[
+	 	 	AND acc_edate < DATE_FORMAT(now(), '%Y%m%d')
+	 	]]>
+	 	</isEqual>
+		-- 학교 관리자 : 장학금신청접수관리 - 장학금대상자입력관리  	 	
+	 	<isEqual property="manager" compareValue="school">
+	 		<isNotEmpty property="selfHigh">
+	 		AND sc_type in ('1','3') -- 하이서울고등학교장학금, 자립형사립고장학금 (하나고일경우만)
+	 		</isNotEmpty>
+	 		<isEmpty property="selfHigh">
+	 		AND sc_type in ('1') -- 하이서울고등학교장학금
+	 		</isEmpty> 
+	 	</isEqual>	 	
+	 	-- 프론트단/관리자단지정기탁금 : 장학사업 진행 여부 확인
+	 	<isNotEmpty property="scType">
+	 		AND sc_type = #scType#
+	 	</isNotEmpty>	 	
+  	  ORDER BY sc_id DESC
+	  LIMIT $startPos$,$listSize$
+    </select>
+	
+</sqlMap>
